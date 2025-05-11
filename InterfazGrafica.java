@@ -1,4 +1,3 @@
-//Se importan las librerias necesarias para la clase
 import javax.swing.*;
 import java.awt.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -8,10 +7,12 @@ import java.util.stream.Stream;
 public class InterfazGrafica {
     private static boolean juegoIniciado = false;
 
-    //Metodo para mostrar el menu inicial del juego, en el cual se muestra el titulo del juego, una gift animado y distintos botones para que el usuario
-    //pueda interactuar
+    public static void main(String[] args) {
+
+    }
+
     public static void menuInicial() {
-        JFrame ventana = new JFrame("Mago De Palabras");
+        JFrame ventana = new JFrame("Flip & Match");
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ventana.setSize(550, 700);
         ventana.setLocationRelativeTo(null);
@@ -21,16 +22,15 @@ public class InterfazGrafica {
         panelPrincipal.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         JPanel panelDeTitulo = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        ImageIcon imagenIcono = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-6\\PantallaInicial.gif");
-       // ImageIcon imagenIcono = new ImageIcon("C:\\Users\\14321\\Downloads\\Practica-5-main\\PantallaInicial.gif");
-        JLabel labelImagen = new JLabel(imagenIcono);
-        panelDeTitulo.add(labelImagen);
+        JLabel labelBienvenida = new JLabel("Bienvenido a Flip & Match");
+        labelBienvenida.setFont(new Font("Noto Sans", Font.BOLD, 36));
+        labelBienvenida.setForeground(new Color(204, 33, 63));
+        panelDeTitulo.add(labelBienvenida);
 
         JPanel panelCentro = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        JLabel labelBienvenida = new JLabel("Bienvenido a Mago De Palabras");
-        labelBienvenida.setFont(new Font("Noto Sans", Font.BOLD, 24));
-        labelBienvenida.setForeground(new Color(0, 102, 204));
-        panelCentro.add(labelBienvenida);
+        ImageIcon imagenIcono = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\pantallaInicial.gif");
+        JLabel labelImagen = new JLabel(imagenIcono);
+        panelCentro.add(labelImagen);
 
         JPanel panelDeAcciones = new JPanel(new GridLayout(1, 3, 15, 15));
         JButton botonJugar = new JButton(" ▶ Jugar");
@@ -92,21 +92,20 @@ public class InterfazGrafica {
         }
     }
 
-    //Metodo para mostrar los creditos, es decir quien desarrollo el programa, se muestra una pequeña ventana con la informacion correspondiente
     public static void mostrarCreditos() {
         JPanel panelCreditos = new JPanel(new BorderLayout(10, 10));
         panelCreditos.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
         JLabel titulo = new JLabel("Créditos", SwingConstants.CENTER);
         titulo.setFont(new Font("Noto Sans", Font.BOLD, 24));
-        titulo.setForeground(new Color(0, 102, 224));
+        titulo.setForeground(new Color(206, 32, 116));
         panelCreditos.add(titulo, BorderLayout.NORTH);
 
         JTextArea contenido = new JTextArea(
                 "Desarrollado por:\n" +
                         "• Diego Erik Alfonso Montoya (1198520)\n" +
                         "• Angel Gabriel Manjarrez Moreno (1197503)\n\n" +
-                        "Versión: 21/04/2025\n" +
+                        "Versión: 10/05/2025\n" +
                         "© Todos los derechos reservados"
         );
         contenido.setFont(new Font("Noto Sans", Font.PLAIN, 14));
@@ -139,7 +138,6 @@ public class InterfazGrafica {
         creditos.setVisible(true);
     }
 
-    //Metodo para solitar cuantos jugadores jugaran, en el cual se muestran 3 botones para la cantidad de jugadores que se desee
     public static int solicitarJugadores() {
         AtomicInteger numeroDeJugadores = new AtomicInteger();
 
@@ -155,7 +153,7 @@ public class InterfazGrafica {
 
         JLabel titulo = new JLabel("Seleccione el número de jugadores \uD83D\uDC65", SwingConstants.CENTER);
         titulo.setFont(new Font("Noto Sans", Font.BOLD, 24));
-        titulo.setForeground(new Color(0, 102, 204));
+        titulo.setForeground(new Color(205, 32, 186));
         panelPrincipal.add(titulo, BorderLayout.NORTH);
 
         JPanel panelBotones = new JPanel(new GridLayout(1, 3, 15, 15));
@@ -199,7 +197,6 @@ public class InterfazGrafica {
         return numeroDeJugadores.get();
     }
 
-    //Metodo para solicitar el nombre de cada jugador dependidendo de la cantidad de jugadores que se hayan ingresado
     public static String solicitarNombreDeJugador(int numDeJugador) {
         JDialog nombreJugador = new JDialog();
         nombreJugador.setTitle("Nombre del Jugador");
@@ -213,7 +210,7 @@ public class InterfazGrafica {
 
         JLabel titulo = new JLabel("Ingrese el nombre del jugador " + numDeJugador + "\uD83D\uDC64", SwingConstants.CENTER);
         titulo.setFont(new Font("Noto Sans", Font.BOLD, 18));
-        titulo.setForeground(new Color(0, 102, 204));
+        titulo.setForeground(new Color(154, 32, 206));
         panelPrincipal.add(titulo, BorderLayout.NORTH);
 
         JTextField campoNombre = new JTextField();
@@ -250,14 +247,13 @@ public class InterfazGrafica {
         return nombre.get();
     }
 
-    //Metodo para solicitar el modo de juego, el usuario puede interactuar con 2 botones segun el modo de juego que desee
-    //tambien se muestra una pequeña descripcion de cada modo de juego
+
     public static int solicitarModoDeJuego() {
         AtomicInteger modoSeleccionado = new AtomicInteger(0);
 
         JDialog modo = new JDialog();
         modo.setTitle("Modo de Juego");
-        modo.setSize(450, 250);
+        modo.setSize(1100, 700);
         modo.setLocationRelativeTo(null);
         modo.setModal(true);
         modo.setResizable(true);
@@ -266,68 +262,99 @@ public class InterfazGrafica {
         panelPrincipal.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         JLabel titulo = new JLabel("MODOS DE JUEGO", SwingConstants.CENTER);
-        titulo.setFont(new Font("Noto Sans", Font.BOLD, 24));
-        titulo.setForeground(new Color(0, 102, 204));
+        titulo.setFont(new Font("Noto Sans", Font.BOLD, 36));
+        titulo.setForeground(new Color(32, 63, 205));
         panelPrincipal.add(titulo, BorderLayout.NORTH);
 
-        JPanel panelBotones = new JPanel(new GridLayout(2, 1, 15, 15));
+        JPanel panelModos = new JPanel(new GridLayout(1, 3, 15, 15));
 
-        JButton botonNormal = new JButton(" Normal ");
-        JButton botonExperto = new JButton(" Experto ");
+        JPanel panelNaruto = new JPanel(new BorderLayout(5, 5));
+        JPanel panelFutbolMatch = new JPanel(new BorderLayout(5, 5));
+        JPanel panelGeoMatch = new JPanel(new BorderLayout(5, 5));
+
+        ImageIcon imagenNaruto = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\cartasNarutoImagenes\\menuN.png");
+        Image imagenEscaladaN = imagenNaruto.getImage().getScaledInstance(350, 550, Image.SCALE_SMOOTH);
+        imagenNaruto = new ImageIcon(imagenEscaladaN);
+
+        ImageIcon imagenFutbolMatch = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\cartasFutbolImagenes\\menuFutbol.png");
+        Image imagenEscaladaF = imagenFutbolMatch.getImage().getScaledInstance(350, 550, Image.SCALE_SMOOTH);
+        imagenFutbolMatch = new ImageIcon(imagenEscaladaF);
+
+        ImageIcon imagenGeoMatch = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\cartasGeoMatchImagenes\\menuGeo.png");
+        Image imagenEscaladaG = imagenGeoMatch.getImage().getScaledInstance(350, 550, Image.SCALE_SMOOTH);
+        imagenGeoMatch = new ImageIcon(imagenEscaladaG);
+
+        JLabel labelImagenNaruto = new JLabel(imagenNaruto);
+        JLabel labelImagenFutbol = new JLabel(imagenFutbolMatch);
+        JLabel labelImagenModo3 = new JLabel(imagenGeoMatch);
+
+        JButton botonNaruto = new JButton(" Naruto ");
+        JButton botonFutbol = new JButton(" FutbolMatch ");
+        JButton botonModo3 = new JButton(" GeoMatch ");
 
         Font fuenteBotones = new Font("Noto Sans", Font.BOLD, 18);
         Color colorBoton = new Color(220, 220, 220);
 
-        Stream.of(botonNormal, botonExperto).forEach(boton -> {
+        Stream.of(botonNaruto, botonFutbol, botonModo3).forEach(boton -> {
             boton.setFont(fuenteBotones);
             boton.setBackground(colorBoton);
             boton.setFocusPainted(false);
         });
 
-        UIManager.put("ToolTip.background", new Color(255, 255, 205));
+        UIManager.put("ToolTip.background", new Color(238, 238, 238));
         UIManager.put("ToolTip.foreground", Color.BLACK);
         UIManager.put("ToolTip.font", new Font("Noto Sans", Font.PLAIN, 14));
+        UIManager.put("ToolTip.border", BorderFactory.createLineBorder(new Color(32, 63, 205), 3, true));
 
-        botonNormal.setToolTipText("<html>Reglas del modo normal:<br> • Vocales sin acentos<br> • Letras repetibles</html>");
-        botonExperto.setToolTipText("<html>Reglas del modo experto:<br> • Vocales con acentos<br> • Letras no repetibles</html>");
 
-        botonNormal.addActionListener(e -> {
+        botonNaruto.setToolTipText(
+                "<html><b style='color:black;'>" + "\uD83C\uDF00" + " Modo Naruto</b><br>" +
+                        "Relaciona a cada ninja con su aldea. ¡Demuestra tu conocimiento shinobi!</html>"
+        );
+
+        botonFutbol.setToolTipText(
+                "<html><b style='color:black;'>" + "\u26BD" + " Modo Fútbol</b><br>" +
+                        "Asocia correctamente a cada equipo con su liga. ¿Eres un verdadero fan?</html>"
+        );
+
+        botonModo3.setToolTipText(
+                "<html><b style='color:black;'>" + "\uD83C\uDF0D" + " Modo GeoMatch</b><br>" +
+                        "Vincula cada ciudad con su país. ¡Pon a prueba tu geografía!</html>"
+        );
+
+        botonNaruto.addActionListener(e -> {
             modoSeleccionado.set(1);
             modo.dispose();
         });
 
-        botonExperto.addActionListener(e -> {
+        botonFutbol.addActionListener(e -> {
             modoSeleccionado.set(2);
             modo.dispose();
         });
 
-        panelBotones.add(botonNormal);
-        panelBotones.add(botonExperto);
+        botonModo3.addActionListener(e -> {
+            modoSeleccionado.set(3);
+            modo.dispose();
+        });
 
-        panelPrincipal.add(panelBotones, BorderLayout.CENTER);
+        panelNaruto.add(labelImagenNaruto, BorderLayout.CENTER);
+        panelNaruto.add(botonNaruto, BorderLayout.SOUTH);
+
+        panelFutbolMatch.add(labelImagenFutbol, BorderLayout.CENTER);
+        panelFutbolMatch.add(botonFutbol, BorderLayout.SOUTH);
+
+        panelGeoMatch.add(labelImagenModo3, BorderLayout.CENTER);
+        panelGeoMatch.add(botonModo3, BorderLayout.SOUTH);
+
+        panelModos.add(panelNaruto);
+        panelModos.add(panelFutbolMatch);
+        panelModos.add(panelGeoMatch);
+
+        panelPrincipal.add(panelModos, BorderLayout.CENTER);
         modo.add(panelPrincipal);
         modo.setVisible(true);
 
         return modoSeleccionado.get();
     }
-
-    // Metodo para mostrar un aviso acerca de que la palabra escrita es correcta
-    public static void mostrarPalabraCorrecta(String aviso, int puntuacion, int puntosTotales) {
-        String mensaje = "La palabra es correcta | " + aviso + " | -----> + " + puntuacion
-                + " puntos \u2705 | (Puntos Totales: " + puntosTotales + ")";
-        JOptionPane.showMessageDialog(null, mensaje, "Correcto", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    // Metodo para mostrar un aviso acerca de que la palabra escrita es incorrecta
-    public static void mostrarPalabraIncorrecta(String aviso) {
-        JOptionPane.showMessageDialog(null, "\u274C " + aviso, "Incorrecto", JOptionPane.ERROR_MESSAGE);
-    }
-
-    // Metodo para avisar que un nombre se duplico y no es valido.
-    public static void mostrarMensajeError(){
-        JDialog nombreIncorrecto = new JDialog();
-        JOptionPane.showMessageDialog(nombreIncorrecto, "No puede ingresar nombres duplicados", "Error", JOptionPane.WARNING_MESSAGE);
-    }
-
 
 }
