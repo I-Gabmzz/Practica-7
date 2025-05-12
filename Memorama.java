@@ -67,7 +67,7 @@ public class Memorama {
         panelIzquierdo.add(Box.createVerticalStrut(15));
 
         JPanel panelPuntuaciones = new JPanel(new BorderLayout());
-        JTextArea areaPuntuaciones = new JTextArea(getAvisoDePuntuacion());
+        areaPuntuaciones = new JTextArea(getAvisoDePuntuacion());
         switch (modoDeJuego) {
             case 1 -> areaPuntuaciones.setForeground(new Color(243, 155, 14));
             case 2 -> areaPuntuaciones.setForeground(new Color(43, 151, 64));
@@ -265,6 +265,7 @@ public class Memorama {
                     botonesCartas[posicionCartaSeleccionada[0]][posicionCartaSeleccionada[1]].setEnabled(false);
                     botonesCartas[fila][columna].setEnabled(false);
                     puntuaciones.set(turnoActual, puntuaciones.get(turnoActual) + 1);
+                    areaPuntuaciones.setText(getAvisoDePuntuacion());
                     avisoTurno.setText(getAvisoDeTurno(modoDeJuego));
 
                 } else {
