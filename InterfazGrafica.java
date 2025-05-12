@@ -8,7 +8,10 @@ public class InterfazGrafica {
     private static boolean juegoIniciado = false;
 
     public static void main(String[] args) {
-
+        menuInicial();
+        solicitarJugadores();
+        solicitarNombreDeJugador(1);
+        solicitarModoDeJuego();
     }
 
     public static void menuInicial() {
@@ -247,7 +250,6 @@ public class InterfazGrafica {
         return nombre.get();
     }
 
-
     public static int solicitarModoDeJuego() {
         AtomicInteger modoSeleccionado = new AtomicInteger(0);
 
@@ -356,5 +358,7 @@ public class InterfazGrafica {
 
         return modoSeleccionado.get();
     }
+
+
 
 }
