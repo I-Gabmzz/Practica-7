@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -10,6 +11,7 @@ public class Memorama {
     private List<Integer> puntuaciones;
     private int turnoActual;
     private JLabel avisoTurno;
+    private Carta[][] cartas;
 
     public static void main(String[] args) {
         Memorama m = new Memorama();
@@ -192,6 +194,48 @@ public class Memorama {
     private void siguienteTurno() {
         turnoActual = (turnoActual + 1) % jugadores.size();
         avisoTurno.setText(getAvisoDeTurno(modoDeJuego));
+    }
+
+    private void inicializarCartas() {
+        cartas = new Carta[4][5];
+        List<Carta> paresCartas = new ArrayList<>();
+        switch(modoDeJuego) {
+            case 1:
+                String[] clanes = {"Konoha", "Sunagakure", "Takigakure", "Kusugakure", "Iwagakure",
+                        "Amegakure", "Kirigakure", "Kumogakure", "Otogakure", "Yugakure"};
+                String[] personajes = {"Naruto","Gaara", "Kakuzu", "Karin", "Deidara",
+                        "Pain", "Zabuza","Killer Bee", "Orochimaru", "Hidan"};
+
+                for (int i = 0; i < clanes.length; i++) {
+                    paresCartas.add(new CartaClan(clanes[i], personajes[i], true));
+                    paresCartas.add(new CartaClan(clanes[i], personajes[i], false));
+                }
+                break;
+            case 2:
+                String[] equipos = {"Ajax", "RealMadrid", "Manchester", "America",
+                        "BayernMunich", "Psg", "Juventus", "Galaxy", "Flamengo","BocaJuniors"};
+                String[] ligas ={"Eredivisie","LaLiga","Premier","LigaMX","Bundesliga","Ligue1","SerieA","Mls","Brasileirao","LigaArgentina"};
+                for (int i = 0; i < ligas.length; i++) {
+                    paresCartas.add(new CartaEquipo(equipos[i],ligas[i], true));
+                    paresCartas.add(new CartaEquipo(equipos[i],ligas[i], false));
+                }
+                break;
+            case 3:
+                String[] paises = {"Mexico", "Alemania", "Australia", "Canada", "Egipto",
+                        "Francia", "Italia", "Japon", "Usa","ReinoUnido"};
+                String[] ciudades ={"Cdmx","Berlin","Sidney","Toronto","ElCairo","Paris","Roma","Tokio","NuevaYork","Londres"};
+                for (int i = 0; i < paises.length; i++) {
+                    paresCartas.add(new CartaPais(paises[i],ciudades[i], true));
+                    paresCartas.add(new CartaPais(paises[i],ciudades[i], false));
+                }
+                break;
+        }
+        Collections.shuffle(paresCartas);
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 5; j++) {
+                cartas[i][j] = paresCartas.get(i * 5 + j);
+            }
+        }
     }
   
 }
