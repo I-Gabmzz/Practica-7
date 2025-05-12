@@ -37,8 +37,8 @@ public class CartaPais extends Carta{
         }else{
             nombreImagen = nombreCiudad + ".png";
         }
-        String ruta = "C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasGeoMatchImagenes\\" + nombreImagen;
-        //String ruta = "C:\Users\PC OSTRICH\Practica-7\\\" + nombreImagen;
+        //String ruta = "C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasGeoMatchImagenes\\" + nombreImagen;
+        String ruta = "C:\\Users\\PC OSTRICH\\Practica-7\\cartasGeoMatchImagenes" + nombreImagen;
         ImageIcon icono = new ImageIcon(ruta);
         Image imagenEscalada = icono.getImage().getScaledInstance(115, 200, Image.SCALE_SMOOTH);
         return new ImageIcon(imagenEscalada);
