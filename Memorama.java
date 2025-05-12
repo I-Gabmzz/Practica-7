@@ -1,3 +1,4 @@
+//Se importan las librerias necesarias para el funcionamiento del programa
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -5,7 +6,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
+//Se declara la clase 
 public class Memorama {
+    //Se definen los atributos de la clase 
     private int modoDeJuego;
     private List<String> jugadores;
     private List<Integer> puntuaciones;
@@ -20,11 +23,12 @@ public class Memorama {
     private boolean bloqueado;
     private JTextArea areaPuntuaciones;
 
+    //Método para ejecutar el programa
     public static void main(String[] args) {
         Memorama m = new Memorama();
         m.iniciarMemorama();
     }
-
+    //Método que muestra toda la interfaz del menÚ del juegador en donde se muestran cartas, turno y diversos componentes de la GUI
     public void menuDeJuego() {
         JFrame ventana = new JFrame(InterfazGrafica.getTituloDeModo(modoDeJuego));
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -152,6 +156,9 @@ public class Memorama {
         ventana.setVisible(true);
     }
 
+    //Método para seleccionar las cartas, en este método se les asignan los botones a cada carta para que funcionen correctamente
+    //además se maneja la lógica de si se encuentra un par se mantiene el turno y se le suma un punto, si no se encuentra un par se cambia al siguiente jugador,
+    //se evalua si se terminó el juego o no.
     private void seleccionarCarta(int fila, int columna) {
         cartas[fila][columna].setVolteada(true);
         botonesCartas[fila][columna].setIcon(obtenerImagenCarta(cartas[fila][columna]));
@@ -187,16 +194,19 @@ public class Memorama {
             timer.start();
         }
     }
+
+    //Método para obtener la dirección de la imagen de la carta correspondiente 
     private ImageIcon obtenerImagenCarta(Carta carta) {
         return carta.getImagen();
     }
 
-
+    //Método para pasar de turno entre los jugadores.
     private void siguienteTurno() {
         turnoActual = (turnoActual + 1) % jugadores.size();
         avisoTurno.setText(getAvisoDeTurno(modoDeJuego));
     }
 
+    //Método para mostrar los turnos 
     public String getAvisoDeTurno(int modo) {
         String jugador = jugadores.get(turnoActual);
         return switch (modo) {
@@ -215,7 +225,7 @@ public class Memorama {
             default -> "";
         };
     }
-
+    //Método para mostrar la puntuación de los jugadores respectivamente.
     public String getAvisoDePuntuacion() {
         StringBuilder sb = new StringBuilder();
         sb.append("         \uD83C\uDFC6   Puntuación   \uD83C\uDFC6      \n\n");
@@ -231,6 +241,7 @@ public class Memorama {
         }
         return sb.toString();
     }
+    //Método para iniciar el memorama y jugar, en este método esta el flujo del juego.
     public void iniciarMemorama() {
         InterfazGrafica.menuInicial();
         jugadores = new ArrayList<>();
@@ -245,6 +256,7 @@ public class Memorama {
         modoDeJuego = InterfazGrafica.solicitarModoDeJuego();
         menuDeJuego();
     }
+    //Método para inicializar las cartas del memorama, además de que se revuelven.
     private void inicializarCartas() {
         cartas = new Carta[4][5];
         List<Carta> paresCartas = new ArrayList<>();
@@ -287,6 +299,7 @@ public class Memorama {
         }
     }
 
+    //Método para determinar si el juego ya terminó.
     private boolean juegoTerminado() {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 5; j++) {
@@ -298,6 +311,7 @@ public class Memorama {
         return true;
     }
 
+    //Método para determinar un ganador en el juego.
     private void determinarGanador() {
         int maxPuntos = Collections.max(puntuaciones);
         List<String> ganadores = new ArrayList<>();
@@ -395,6 +409,7 @@ public class Memorama {
         dialogoGanador.setVisible(true);
     }
 
+    //Método para reiniciar el juego en caso de que el usuario quiera jugar otra vez y cambiar de modo.
     private void reiniciarJuego() {
         puntuaciones = new ArrayList<>();
         for (int i = 0; i < jugadores.size(); i++) {
@@ -406,6 +421,7 @@ public class Memorama {
         menuDeJuego();
     }
 
+    //Método para mostrar un mensaje de despedida al momento de terminar el juego.
     private void mostrarAgradecimiento() {
         JFrame frameAgradecimiento = new JFrame();
         frameAgradecimiento.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
