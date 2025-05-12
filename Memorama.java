@@ -1,9 +1,13 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 public class Memorama {
     private int modoDeJuego;
+    private List<String> jugadores;
+    private List<Integer> puntuaciones;
 
     public void menuDeJuego() {
         JButton[][] botonesCartas;
@@ -126,6 +130,36 @@ public class Memorama {
 
         ventana.add(panelPrincipal);
         ventana.setVisible(true);
+    }
+
+    public String getAvisoDePuntuacion() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("         \uD83C\uDFC6   Puntuación   \uD83C\uDFC6      \n\n");
+        for (int i = 0; i < jugadores.size(); i++) {
+            int puntos = puntuaciones.get(i);
+            sb.append(jugadores.get(i))
+                    .append(": ")
+                    .append(puntos);
+
+            if (i < jugadores.size() - 1) {
+                sb.append("\n");
+            }
+        }
+        return sb.toString();
+    }
+    public void iniciarMemorama() {
+        InterfazGrafica.menuInicial();
+        jugadores = new ArrayList<>();
+        puntuaciones = new ArrayList<>();
+
+        int numeroDeJugadores = InterfazGrafica.solicitarJugadores();
+        for (int i = 1; i < numeroDeJugadores + 1; i++) {
+            String nombreDeJugador = InterfazGrafica.solicitarNombreDeJugador(i);
+            jugadores.add(nombreDeJugador);
+            puntuaciones.add(0);
+        }
+        modoDeJuego = InterfazGrafica.solicitarModoDeJuego();
+        menuDeJuego();
     }
 
 
