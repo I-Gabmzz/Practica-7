@@ -9,6 +9,7 @@ public class Memorama {
     private List<String> jugadores;
     private List<Integer> puntuaciones;
     private int turnoActual;
+    private JLabel avisoTurno;
 
     public static void main(String[] args) {
         Memorama m = new Memorama();
@@ -186,6 +187,11 @@ public class Memorama {
         }
         modoDeJuego = InterfazGrafica.solicitarModoDeJuego();
         menuDeJuego();
+    }
+
+    private void siguienteTurno() {
+        turnoActual = (turnoActual + 1) % jugadores.size();
+        avisoTurno.setText(getAvisoDeTurno(modoDeJuego));
     }
   
 }
