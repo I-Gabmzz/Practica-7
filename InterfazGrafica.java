@@ -359,6 +359,14 @@ public class InterfazGrafica {
         return modoSeleccionado.get();
     }
 
-
+    public static String getTituloDeModo(int modo) {
+        return switch (modo) {
+            case 1 -> " \uD83C\uDF00 Naruto ";
+            case 2 -> " \u26BD FutbolMatch ";
+            case 3 -> " \uD83C\uDF0D GeoMatch ";
+            default -> "";
+        };
+    }
 
 }
+
