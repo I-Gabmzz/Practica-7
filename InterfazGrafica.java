@@ -406,5 +406,45 @@ public class InterfazGrafica {
         };
     }
 
+    public static void mostrarInstrucciones(int modo) {
+        switch (modo) {
+            case 1 -> JOptionPane.showMessageDialog(
+                    null,
+                    "• El juego consta de 20 cartas, en las cuales hay 10 ninjas y 10 aldeas.\n" +
+                            "• Durante el turno voltearás 2 cartas con el objetivo de encontrar 2 cartas que sean pareja.\n" +
+                            "• Dos cartas son parejas cuando encuentras a un ninja y a la aldea a la que este pertenece.\n" +
+                            "• Si encuentras una pareja correcta, las cartas permanecen visibles, ganas 1 punto y vuelves a tener tu turno.\n" +
+                            "• Si encuentras dos ninjas o dos aldeas en un mismo turno e inclusive un ninja y otra aldea de la cual no es originario,\n" +
+                            " las cartas vuelven a ocultarse.\n" +
+                            "• Este juego termina cuando todas las parejas han sido encontradas.\n","\uD83C\uDF00 Instrucciones Modo Naruto", JOptionPane.INFORMATION_MESSAGE
+            );
+
+            case 2 -> JOptionPane.showMessageDialog(
+                    null,
+                    "• El juego consta de 20 cartas, en las cuales hay 10 equipos de Fútbol y 10 ligas.\n" +
+                            "• Durante el turno voltearás 2 cartas con el objetivo de encontrar 2 cartas que sean pareja.\n" +
+                            "• Dos cartas son parejas cuando emparejas correctamente un equipo con la liga en la que compite.\n" +
+                            "• Si encuentras una pareja correcta, las cartas permanecen visibles, ganas 1 punto y vuelves a tener tu turno.\n" +
+                            "• Si encuentras dos equipos o dos ligas en un mismo turno e inclusive un equipo y otra liga de la cual no es \n" +
+                            "partícipe, las cartas vuelven a ocultarse.\n" +
+                            "• Este juego termina cuando todas las parejas han sido encontradas.\n","\u26BD Instrucciones Modo Fútbol",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+
+            case 3 -> JOptionPane.showMessageDialog(
+                    null,
+                    "• El juego consta de 20 cartas, en las cuales hay 10 ciudades y 10 países.\n" +
+                            "• Durante el turno voltearás 2 cartas con el objetivo de encontrar 2 cartas que sean pareja.\n" +
+                            "• Dos cartas son parejas cuando unes una ciudad con el país al que pertenece.\n" +
+                            "• Si encuentras una pareja correcta, las cartas permanecen visibles, ganas 1 punto y vuelves a tener tu turno.\n" +
+                            "• Si encuentras dos ciudades o dos países en un mismo turno e inclusive una ciudad y otro país el cual no tiene \n" +
+                            "esta ciudad, las cartas vuelven a ocultarse.\n" +
+                            "• Este juego termina cuando todas las parejas han sido encontradas.\n","\uD83C\uDF0D Instrucciones Modo GeoMatch",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+
+            default -> JOptionPane.showMessageDialog(null, "Modo no válido", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 }
 
