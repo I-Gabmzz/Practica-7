@@ -13,6 +13,12 @@ public class Memorama {
     private JLabel avisoTurno;
     private JTextArea areaPuntuaciones;
     private Carta[][] cartas;
+    private Carta primeraCartaSeleccionada;
+    private boolean cartaBloqueada;
+    private JButton[][] botonesCartas;
+    private int[] posicionCartaSeleccionada;
+    private ImageIcon imagenCubierta;
+    private Timer timer;
 
     public static void main(String[] args) {
         Memorama m = new Memorama();
@@ -241,6 +247,39 @@ public class Memorama {
             for (int j = 0; j < 5; j++) {
                 cartas[i][j] = paresCartas.get(i * 5 + j);
             }
+        }
+    }
+
+    private void seleccionarCarta(int fila, int columna) {
+        cartas[fila][columna].setVolteada(true);
+        botonesCartas[fila][columna].setIcon(obtenerImagenCarta(cartas[fila][columna]));
+        if (primeraCartaSeleccionada == null) {
+            primeraCartaSeleccionada = cartas[fila][columna];
+            posicionCartaSeleccionada = new int[]{fila, columna};
+        } else {
+            cartaBloqueada = true;
+            timer = new Timer(1000, e -> {
+                if (primeraCartaSeleccionada.esIgualA(cartas[fila][columna])) {
+                    primeraCartaSeleccionada.setEncontrada(true);
+                    cartas[fila][columna].setEncontrada(true);
+                    botonesCartas[posicionCartaSeleccionada[0]][posicionCartaSeleccionada[1]].setEnabled(false);
+                    botonesCartas[fila][columna].setEnabled(false);
+                    puntuaciones.set(turnoActual, puntuaciones.get(turnoActual) + 1);
+                    avisoTurno.setText(getAvisoDeTurno(modoDeJuego));
+
+                } else {
+                    primeraCartaSeleccionada.setVolteada(false);
+                    cartas[fila][columna].setVolteada(false);
+                    botonesCartas[posicionCartaSeleccionada[0]][posicionCartaSeleccionada[1]].setIcon(imagenCubierta);
+                    botonesCartas[fila][columna].setIcon(imagenCubierta);
+                    siguienteTurno();
+                }
+                primeraCartaSeleccionada = null;
+                cartaBloqueada = false;
+                timer.stop();
+            });
+            timer.setRepeats(false);
+            timer.start();
         }
     }
   
