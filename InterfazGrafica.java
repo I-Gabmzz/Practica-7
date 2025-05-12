@@ -359,4 +359,6 @@ public class InterfazGrafica {
         return modoSeleccionado.get();
     }
 
+
+
 }
