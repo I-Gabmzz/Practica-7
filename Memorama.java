@@ -17,7 +17,7 @@ public class Memorama {
         panelPrincipal.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
 
         JPanel panelTitulo = new JPanel();
-        ImageIcon gifTitular = new ImageIcon("");
+        ImageIcon gifTitular = new ImageIcon(InterfazGrafica.getBannerPrincipal(modoDeJuego));
         JLabel panelTitular = new JLabel(gifTitular);
         panelTitulo.add(panelTitular);
         panelPrincipal.add(panelTitulo, BorderLayout.NORTH);
@@ -38,7 +38,7 @@ public class Memorama {
 
         panelIzquierdo.add(Box.createVerticalStrut(15));
         JPanel panelGif = new JPanel(new BorderLayout());
-        ImageIcon gifCentral = new ImageIcon("");
+        ImageIcon gifCentral = new ImageIcon(InterfazGrafica.getBannerCentral(modoDeJuego));
         JLabel panelGifCentral = new JLabel(gifCentral, JLabel.CENTER);
         panelGif.add(panelGifCentral, BorderLayout.CENTER);
         panelGif.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50000));
@@ -63,7 +63,7 @@ public class Memorama {
         panelDerecho.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 10));
 
         botonesCartas = new JButton[4][5];
-        ImageIcon imagenCartaOculta = new ImageIcon("");
+        ImageIcon imagenCartaOculta = new ImageIcon(InterfazGrafica.getCartasOcultas(modoDeJuego));
         Image imagenCartaOcultaEscalada = imagenCartaOculta.getImage().getScaledInstance(115, 200, Image.SCALE_SMOOTH);
         ImageIcon imagenCubierta = new ImageIcon(imagenCartaOcultaEscalada);
 
@@ -104,7 +104,7 @@ public class Memorama {
                 });
 
         botonInstrucciones.addActionListener(e -> {
-
+            InterfazGrafica.mostrarInstrucciones(modoDeJuego);
         });
 
         botonSalir.addActionListener(e -> {
