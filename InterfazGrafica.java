@@ -1,19 +1,17 @@
+// Se importan las librerias necesarias para la clase.
 import javax.swing.*;
 import java.awt.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
+// Se define la clase InterfazGrafica.
 public class InterfazGrafica {
+    // Se declara el atributo de juegoIniciado el cual indica si ya inicio la interfazGrafica.
     private static boolean juegoIniciado = false;
 
-    public static void main(String[] args) {
-        menuInicial();
-        solicitarJugadores();
-        solicitarNombreDeJugador(1);
-        solicitarModoDeJuego();
-    }
-
+    // Se declara el metodo menuInicial el cual practicamente muestra el menu con el que le brinda la bienvenida al usuario y le da la posiblidad de seleccionar jugar, creditos o salir.
+    // Este muestra una interfazGrafica compuesta de un gif, una bienvenida y 3 botones.
     public static void menuInicial() {
         JFrame ventana = new JFrame("Flip & Match");
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -96,6 +94,7 @@ public class InterfazGrafica {
         }
     }
 
+    // Metodo para mostrar los creditos (los creadores) mediante una GUI.
     public static void mostrarCreditos() {
         JPanel panelCreditos = new JPanel(new BorderLayout(10, 10));
         panelCreditos.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
@@ -142,6 +141,7 @@ public class InterfazGrafica {
         creditos.setVisible(true);
     }
 
+    // Metodo el cual mediante una GUI solicita la cantidad de jugadores, 2, 3 o 4.
     public static int solicitarJugadores() {
         AtomicInteger numeroDeJugadores = new AtomicInteger();
 
@@ -201,6 +201,7 @@ public class InterfazGrafica {
         return numeroDeJugadores.get();
     }
 
+    // Metodo el cual le solicita el nombre a cada jugador perteneciente a los seleccionados.
     public static String solicitarNombreDeJugador(int numDeJugador) {
         JDialog nombreJugador = new JDialog();
         nombreJugador.setTitle("Nombre del Jugador");
@@ -251,6 +252,7 @@ public class InterfazGrafica {
         return nombre.get();
     }
 
+    // Metodo el cual mediante una GUI muestra 3 botones y 3 imagenes, esto con el fin de que el usuario seleccione un modo de juego.
     public static int solicitarModoDeJuego() {
         AtomicInteger modoSeleccionado = new AtomicInteger(0);
 
@@ -275,18 +277,18 @@ public class InterfazGrafica {
         JPanel panelFutbolMatch = new JPanel(new BorderLayout(5, 5));
         JPanel panelGeoMatch = new JPanel(new BorderLayout(5, 5));
 
-        //ImageIcon imagenNaruto = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\cartasNarutoImagenes\\menuN.png");
-        ImageIcon imagenNaruto = new ImageIcon("C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasNarutoImagenes\\menuN.png");
+        ImageIcon imagenNaruto = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\cartasNarutoImagenes\\menuN.png");
+        // ImageIcon imagenNaruto = new ImageIcon("C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasNarutoImagenes\\menuN.png");
         Image imagenEscaladaN = imagenNaruto.getImage().getScaledInstance(350, 550, Image.SCALE_SMOOTH);
         imagenNaruto = new ImageIcon(imagenEscaladaN);
 
-        //ImageIcon imagenFutbolMatch = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\cartasFutbolImagenes\\menuFutbol.png");
-        ImageIcon imagenFutbolMatch = new ImageIcon("C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasFutbolImagenes\\menuFutbol.png");
+        ImageIcon imagenFutbolMatch = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\cartasFutbolImagenes\\menuFutbol.png");
+        // ImageIcon imagenFutbolMatch = new ImageIcon("C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasFutbolImagenes\\menuFutbol.png");
         Image imagenEscaladaF = imagenFutbolMatch.getImage().getScaledInstance(350, 550, Image.SCALE_SMOOTH);
         imagenFutbolMatch = new ImageIcon(imagenEscaladaF);
 
-        //ImageIcon imagenGeoMatch = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\cartasGeoMatchImagenes\\menuGeo.png");
-        ImageIcon imagenGeoMatch = new ImageIcon("C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasGeoMatchImagenes\\menuGeo.png");
+        ImageIcon imagenGeoMatch = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\cartasGeoMatchImagenes\\menuGeo.png");
+        // ImageIcon imagenGeoMatch = new ImageIcon("C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasGeoMatchImagenes\\menuGeo.png");
         Image imagenEscaladaG = imagenGeoMatch.getImage().getScaledInstance(350, 550, Image.SCALE_SMOOTH);
         imagenGeoMatch = new ImageIcon(imagenEscaladaG);
 
@@ -363,6 +365,7 @@ public class InterfazGrafica {
         return modoSeleccionado.get();
     }
 
+    // Metodo con el cual se obtiene el titulo de la ventana de la GUI a traves del modo de juego seleccionado. 
     public static String getTituloDeModo(int modo) {
         return switch (modo) {
             case 1 -> " \uD83C\uDF00 Naruto ";
@@ -372,6 +375,7 @@ public class InterfazGrafica {
         };
     }
 
+    // Metodo con el cual se obtiene el banner de la ventana de la GUI a traves del modo de juego seleccionado. 
     public static String getBannerPrincipal(int modo) {
         return switch (modo) {
             case 1 -> "C:\\Users\\PC OSTRICH\\Practica-7\\bannerNaruto.png";
@@ -384,6 +388,7 @@ public class InterfazGrafica {
         };
     }
 
+    // Metodo con el cual se obtiene el bannerCentral de la ventana de la GUI a traves del modo de juego seleccionado. 
     public static String getBannerCentral(int modo) {
         return switch (modo) {
             case 1 -> "C:\\Users\\PC OSTRICH\\Practica-7\\NarutoCentral.gif";
@@ -396,6 +401,7 @@ public class InterfazGrafica {
         };
     }
 
+    // Metodo con el cual se obtiene la parte trasera de las cartas para mostrarlas en la GUI a traves del modo de juego seleccionado. 
     public static String getCartasOcultas(int modo) {
         return switch (modo) {
             case 1 -> "C:\\Users\\PC OSTRICH\\Practica-7\\cartasNarutoImagenes\\fondoNaruto.png";
@@ -408,6 +414,7 @@ public class InterfazGrafica {
         };
     }
 
+    // Metodo para mostrar las respectivas instrucciones segun el modo de juego seleccionado y las reglas de este mismo.
     public static void mostrarInstrucciones(int modo) {
         switch (modo) {
             case 1 -> JOptionPane.showMessageDialog(
@@ -446,6 +453,19 @@ public class InterfazGrafica {
             );
             default -> JOptionPane.showMessageDialog(null, "Modo no válido", "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    // Metodo con el cual se obtiene la imagen a imprimir cuando exista un ganador en la GUI a traves del modo de juego seleccionado. 
+    public static String getImagenGanador(int modoDeJuego) {
+        return switch (modoDeJuego) {
+            case 1 -> "C:\\Users\\PC OSTRICH\\Practica-7\\NarutoFinish.png";
+            // case 1 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasNarutoImagenes\\fondoNaruto.png";
+            case 2 -> "C:\\Users\\PC OSTRICH\\Practica-7\\FutbolFinish.png";
+            // case 2 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasFutbolImagenes\\fondoFut.png";
+            case 3 -> "C:\\Users\\PC OSTRICH\\Practica-7\\GeoFinish.png";
+            // case 3 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasGeoMatchImagenes\\PaisGeo.png";
+            default -> "";
+        };
     }
 }
 
