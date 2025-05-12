@@ -1,3 +1,5 @@
+import javax.swing.*;
+
 public abstract class Carta {
     protected boolean volteada;
     protected boolean encontrada;
@@ -25,5 +27,5 @@ public abstract class Carta {
 
 
     public abstract boolean esIgualA(Carta carta);
-
+    public abstract ImageIcon getImagen();
 }
