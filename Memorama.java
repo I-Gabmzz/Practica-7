@@ -1,9 +1,14 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 import java.util.stream.Stream;
 
 public class Memorama {
     private int modoDeJuego;
+    private List<String> jugadores;
+    private int turnoActual;
+
+
 
     public void menuDeJuego() {
         JButton[][] botonesCartas;
@@ -30,7 +35,7 @@ public class Memorama {
 
         JPanel panelTurno = new JPanel(new BorderLayout());
 
-        JLabel avisoTurno = new JLabel("", JLabel.CENTER);
+        JLabel avisoTurno = new JLabel(getAvisoDeTurno(modoDeJuego), JLabel.CENTER);
         avisoTurno.setFont(new Font("Noto Sans", Font.BOLD, 24));
         panelTurno.add(avisoTurno, BorderLayout.CENTER);
         panelTurno.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
@@ -128,5 +133,23 @@ public class Memorama {
         ventana.setVisible(true);
     }
 
+    public String getAvisoDeTurno(int modo) {
+        String jugador = jugadores.get(turnoActual);
+        return switch (modo) {
+            case 1 -> String.format(
+                    "<html><center><font color='#f39b0e'>\uD83D\uDC64<br>Turno del Jugador<br><br><font color='black'>%s</font></font></center></html>",
+                    jugador
+            );
+            case 2 -> String.format(
+                    "<html><center><font color='#2b9740'>\uD83D\uDC64<br>Turno del Jugador<br><br><font color='black'>%s</font></font></center></html>",
+                    jugador
+            );
+            case 3 -> String.format(
+                    "<html><center><font color='#70ab95'>\uD83D\uDC64<br>Turno del Jugador<br><br><font color='black'>%s</font></font></center></html>",
+                    jugador
+            );
+            default -> "";
+        };
+    }
 
 }
