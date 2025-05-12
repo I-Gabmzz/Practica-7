@@ -8,6 +8,7 @@ public class Memorama {
     private int modoDeJuego;
     private List<String> jugadores;
     private List<Integer> puntuaciones;
+    private int turnoActual;
 
     public void menuDeJuego() {
         JButton[][] botonesCartas;
@@ -21,7 +22,7 @@ public class Memorama {
         panelPrincipal.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
 
         JPanel panelTitulo = new JPanel();
-        ImageIcon gifTitular = new ImageIcon("");
+        ImageIcon gifTitular = new ImageIcon(InterfazGrafica.getBannerPrincipal(modoDeJuego));
         JLabel panelTitular = new JLabel(gifTitular);
         panelTitulo.add(panelTitular);
         panelPrincipal.add(panelTitulo, BorderLayout.NORTH);
@@ -34,7 +35,7 @@ public class Memorama {
 
         JPanel panelTurno = new JPanel(new BorderLayout());
 
-        JLabel avisoTurno = new JLabel("", JLabel.CENTER);
+        JLabel avisoTurno = new JLabel(getAvisoDeTurno(modoDeJuego), JLabel.CENTER);
         avisoTurno.setFont(new Font("Noto Sans", Font.BOLD, 24));
         panelTurno.add(avisoTurno, BorderLayout.CENTER);
         panelTurno.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
@@ -42,7 +43,7 @@ public class Memorama {
 
         panelIzquierdo.add(Box.createVerticalStrut(15));
         JPanel panelGif = new JPanel(new BorderLayout());
-        ImageIcon gifCentral = new ImageIcon("");
+        ImageIcon gifCentral = new ImageIcon(InterfazGrafica.getBannerCentral(modoDeJuego));
         JLabel panelGifCentral = new JLabel(gifCentral, JLabel.CENTER);
         panelGif.add(panelGifCentral, BorderLayout.CENTER);
         panelGif.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50000));
@@ -67,7 +68,7 @@ public class Memorama {
         panelDerecho.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 10));
 
         botonesCartas = new JButton[4][5];
-        ImageIcon imagenCartaOculta = new ImageIcon("");
+        ImageIcon imagenCartaOculta = new ImageIcon(InterfazGrafica.getCartasOcultas(modoDeJuego));
         Image imagenCartaOcultaEscalada = imagenCartaOculta.getImage().getScaledInstance(115, 200, Image.SCALE_SMOOTH);
         ImageIcon imagenCubierta = new ImageIcon(imagenCartaOcultaEscalada);
 
@@ -108,7 +109,7 @@ public class Memorama {
                 });
 
         botonInstrucciones.addActionListener(e -> {
-
+            InterfazGrafica.mostrarInstrucciones(modoDeJuego);
         });
 
         botonSalir.addActionListener(e -> {
@@ -131,8 +132,27 @@ public class Memorama {
         ventana.add(panelPrincipal);
         ventana.setVisible(true);
     }
+  
+    public String getAvisoDeTurno(int modo) {
+        String jugador = jugadores.get(turnoActual);
+        return switch (modo) {
+            case 1 -> String.format(
+                    "<html><center><font color='#f39b0e'>\uD83D\uDC64<br>Turno del Jugador<br><br><font color='black'>%s</font></font></center></html>",
+                    jugador
+            );
+            case 2 -> String.format(
+                    "<html><center><font color='#2b9740'>\uD83D\uDC64<br>Turno del Jugador<br><br><font color='black'>%s</font></font></center></html>",
+                    jugador
+            );
+            case 3 -> String.format(
+                    "<html><center><font color='#70ab95'>\uD83D\uDC64<br>Turno del Jugador<br><br><font color='black'>%s</font></font></center></html>",
+                    jugador
+            );
+            default -> "";
+        };
+    }
 
-    public String getAvisoDePuntuacion() {
+  public String getAvisoDePuntuacion() {
         StringBuilder sb = new StringBuilder();
         sb.append("         \uD83C\uDFC6   Puntuación   \uD83C\uDFC6      \n\n");
         for (int i = 0; i < jugadores.size(); i++) {
@@ -147,6 +167,7 @@ public class Memorama {
         }
         return sb.toString();
     }
+  
     public void iniciarMemorama() {
         InterfazGrafica.menuInicial();
         jugadores = new ArrayList<>();
@@ -161,6 +182,5 @@ public class Memorama {
         modoDeJuego = InterfazGrafica.solicitarModoDeJuego();
         menuDeJuego();
     }
-
-
+  
 }
