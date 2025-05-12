@@ -267,7 +267,9 @@ public class Memorama {
                     puntuaciones.set(turnoActual, puntuaciones.get(turnoActual) + 1);
                     areaPuntuaciones.setText(getAvisoDePuntuacion());
                     avisoTurno.setText(getAvisoDeTurno(modoDeJuego));
-
+                    if (juegoTerminado()) {
+                        determinarGanador();
+                    }
                 } else {
                     primeraCartaSeleccionada.setVolteada(false);
                     cartas[fila][columna].setVolteada(false);
@@ -282,6 +284,39 @@ public class Memorama {
             timer.setRepeats(false);
             timer.start();
         }
+    }
+    private boolean juegoTerminado() {
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 5; j++) {
+                if (!cartas[i][j].isEncontrada()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    private void determinarGanador() {
+        int maxPuntos = Collections.max(puntuaciones);
+        List<String> ganadores = new ArrayList<>();
+
+        for (int i = 0; i < puntuaciones.size(); i++) {
+            if (puntuaciones.get(i) == maxPuntos) {
+                ganadores.add(jugadores.get(i));
+            }
+        }
+
+        String mensaje;
+        if (ganadores.size() == 1) {
+            mensaje = "¡Felicidades " + ganadores.get(0) + "!\nHas ganado con " + maxPuntos + " puntos.";
+        } else {
+            mensaje = "¡Empate entre:\n";
+            for (String ganador : ganadores) {
+                mensaje += "- " + ganador + "\n";
+            }
+            mensaje += "Todos con " + maxPuntos + " puntos.";
+        }
+
+        JOptionPane.showMessageDialog(null, mensaje, "¡Juego Terminado!", JOptionPane.INFORMATION_MESSAGE);
     }
   
 }
