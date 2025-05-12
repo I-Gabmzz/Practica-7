@@ -31,7 +31,8 @@ public class InterfazGrafica {
         panelDeTitulo.add(labelBienvenida);
 
         JPanel panelCentro = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        ImageIcon imagenIcono = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\pantallaInicial.gif");
+        //ImageIcon imagenIcono = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\pantallaInicial.gif");
+        ImageIcon imagenIcono = new ImageIcon("C:\\Users\\14321\\IdeaProjects\\Practica-7\\pantallaInicial.gif");
         JLabel labelImagen = new JLabel(imagenIcono);
         panelCentro.add(labelImagen);
 
@@ -274,15 +275,18 @@ public class InterfazGrafica {
         JPanel panelFutbolMatch = new JPanel(new BorderLayout(5, 5));
         JPanel panelGeoMatch = new JPanel(new BorderLayout(5, 5));
 
-        ImageIcon imagenNaruto = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\cartasNarutoImagenes\\menuN.png");
+        //ImageIcon imagenNaruto = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\cartasNarutoImagenes\\menuN.png");
+        ImageIcon imagenNaruto = new ImageIcon("C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasNarutoImagenes\\menuN.png");
         Image imagenEscaladaN = imagenNaruto.getImage().getScaledInstance(350, 550, Image.SCALE_SMOOTH);
         imagenNaruto = new ImageIcon(imagenEscaladaN);
 
-        ImageIcon imagenFutbolMatch = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\cartasFutbolImagenes\\menuFutbol.png");
+        //ImageIcon imagenFutbolMatch = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\cartasFutbolImagenes\\menuFutbol.png");
+        ImageIcon imagenFutbolMatch = new ImageIcon("C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasFutbolImagenes\\menuFutbol.png");
         Image imagenEscaladaF = imagenFutbolMatch.getImage().getScaledInstance(350, 550, Image.SCALE_SMOOTH);
         imagenFutbolMatch = new ImageIcon(imagenEscaladaF);
 
-        ImageIcon imagenGeoMatch = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\cartasGeoMatchImagenes\\menuGeo.png");
+        //ImageIcon imagenGeoMatch = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\cartasGeoMatchImagenes\\menuGeo.png");
+        ImageIcon imagenGeoMatch = new ImageIcon("C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasGeoMatchImagenes\\menuGeo.png");
         Image imagenEscaladaG = imagenGeoMatch.getImage().getScaledInstance(350, 550, Image.SCALE_SMOOTH);
         imagenGeoMatch = new ImageIcon(imagenEscaladaG);
 
@@ -368,5 +372,79 @@ public class InterfazGrafica {
         };
     }
 
+    public static String getBannerPrincipal(int modo) {
+        return switch (modo) {
+            case 1 -> " \uD83C\uDF00 Modo Naruto ";
+            //case 2 -> "C:\\Users\\PC OSTRICH\\Practica-7\\bannerFutbolMatch.png";
+            case 2 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\bannerFutbolMatch.png";
+            //case 3 -> "C:\\Users\\PC OSTRICH\\Practica-7\\bannerGeoMatch.png";
+            case 3 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\bannerGeoMatch.png";
+            default -> "";
+        };
+    }
+
+    public static String getBannerCentral(int modo) {
+        return switch (modo) {
+            case 1 -> " \uD83C\uDF00 Modo Naruto ";
+            //case 2 -> "C:\\Users\\PC OSTRICH\\Practica-7\\futbolMatchCentral.gif";
+            case 2 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\futbolMatchCentral.gif";
+            //case 3 -> "C:\\Users\\PC OSTRICH\\Practica-7\\GeoMatchCentral.gif";
+            case 3 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\GeoMatchCentral.gif";
+            default -> "";
+        };
+    }
+
+    public static String getCartasOcultas(int modo) {
+        return switch (modo) {
+            //case 1 -> "C:\\Users\\PC OSTRICH\\Practica-7\\cartasNarutoImagenes\\fondoNaruto.png";
+            case 1 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasNarutoImagenes\\fondoNaruto.png";
+            //case 2 -> "C:\\Users\\PC OSTRICH\\Practica-7\\cartasFutbolImagenes\\fondoFut.png";
+            case 2 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasFutbolImagenes\\fondoFut.png";
+            //case 3 -> "C:\\Users\\PC OSTRICH\\Practica-7\\cartasGeoMatchImagenes\\PaisGeo.png";
+            case 3 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasGeoMatchImagenes\\PaisGeo.png";
+            default -> "";
+        };
+    }
+
+    public static void mostrarInstrucciones(int modo) {
+        switch (modo) {
+            case 1 -> JOptionPane.showMessageDialog(
+                    null,
+                    "• El juego consta de 20 cartas, en las cuales hay 10 ninjas y 10 aldeas.\n" +
+                            "• Durante el turno voltearás 2 cartas con el objetivo de encontrar 2 cartas que sean pareja.\n" +
+                            "• Dos cartas son parejas cuando encuentras a un ninja y a la aldea a la que este pertenece.\n" +
+                            "• Si encuentras una pareja correcta, las cartas permanecen visibles, ganas 1 punto y vuelves a tener tu turno.\n" +
+                            "• Si encuentras dos ninjas o dos aldeas en un mismo turno e inclusive un ninja y otra aldea de la cual no es originario,\n" +
+                            " las cartas vuelven a ocultarse.\n" +
+                            "• Este juego termina cuando todas las parejas han sido encontradas.\n","\uD83C\uDF00 Instrucciones Modo Naruto", JOptionPane.INFORMATION_MESSAGE
+            );
+
+            case 2 -> JOptionPane.showMessageDialog(
+                    null,
+                    "• El juego consta de 20 cartas, en las cuales hay 10 equipos de Fútbol y 10 ligas.\n" +
+                            "• Durante el turno voltearás 2 cartas con el objetivo de encontrar 2 cartas que sean pareja.\n" +
+                            "• Dos cartas son parejas cuando emparejas correctamente un equipo con la liga en la que compite.\n" +
+                            "• Si encuentras una pareja correcta, las cartas permanecen visibles, ganas 1 punto y vuelves a tener tu turno.\n" +
+                            "• Si encuentras dos equipos o dos ligas en un mismo turno e inclusive un equipo y otra liga de la cual no es \n" +
+                            "partícipe, las cartas vuelven a ocultarse.\n" +
+                            "• Este juego termina cuando todas las parejas han sido encontradas.\n","\u26BD Instrucciones Modo Fútbol",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+
+            case 3 -> JOptionPane.showMessageDialog(
+                    null,
+                    "• El juego consta de 20 cartas, en las cuales hay 10 ciudades y 10 países.\n" +
+                            "• Durante el turno voltearás 2 cartas con el objetivo de encontrar 2 cartas que sean pareja.\n" +
+                            "• Dos cartas son parejas cuando unes una ciudad con el país al que pertenece.\n" +
+                            "• Si encuentras una pareja correcta, las cartas permanecen visibles, ganas 1 punto y vuelves a tener tu turno.\n" +
+                            "• Si encuentras dos ciudades o dos países en un mismo turno e inclusive una ciudad y otro país el cual no tiene \n" +
+                            "esta ciudad, las cartas vuelven a ocultarse.\n" +
+                            "• Este juego termina cuando todas las parejas han sido encontradas.\n","\uD83C\uDF0D Instrucciones Modo GeoMatch",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+
+            default -> JOptionPane.showMessageDialog(null, "Modo no válido", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 }
 
