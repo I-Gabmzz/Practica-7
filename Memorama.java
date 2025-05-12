@@ -10,15 +10,15 @@ public class Memorama {
     private List<String> jugadores;
     private List<Integer> puntuaciones;
     private int turnoActual;
-    private JLabel avisoTurno;
-    private JTextArea areaPuntuaciones;
     private Carta[][] cartas;
-    private Carta primeraCartaSeleccionada;
-    private boolean cartaBloqueada;
     private JButton[][] botonesCartas;
-    private int[] posicionCartaSeleccionada;
+    private JLabel avisoTurno;
     private ImageIcon imagenCubierta;
     private Timer timer;
+    private Carta primeraSeleccion;
+    private int[] primeraSeleccionPos;
+    private boolean bloqueado;
+    private JTextArea areaPuntuaciones;
 
     public static void main(String[] args) {
         Memorama m = new Memorama();
@@ -26,8 +26,6 @@ public class Memorama {
     }
 
     public void menuDeJuego() {
-        JButton[][] botonesCartas;
-
         JFrame ventana = new JFrame(InterfazGrafica.getTituloDeModo(modoDeJuego));
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ventana.setSize(1000, 1050);
@@ -48,9 +46,9 @@ public class Memorama {
         panelIzquierdo.setLayout(new BoxLayout(panelIzquierdo, BoxLayout.Y_AXIS));
         panelIzquierdo.setBorder(BorderFactory.createEmptyBorder(0, 10, 5, 5));
 
-        JPanel panelTurno = new JPanel(new BorderLayout());
 
-        JLabel avisoTurno = new JLabel(getAvisoDeTurno(modoDeJuego), JLabel.CENTER);
+        JPanel panelTurno = new JPanel(new BorderLayout());
+        avisoTurno = new JLabel(getAvisoDeTurno(modoDeJuego), JLabel.CENTER);
         avisoTurno.setFont(new Font("Noto Sans", Font.BOLD, 24));
         panelTurno.add(avisoTurno, BorderLayout.CENTER);
         panelTurno.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
@@ -76,17 +74,17 @@ public class Memorama {
         areaPuntuaciones.setFont(new Font("Noto Sans", Font.PLAIN, 24));
         areaPuntuaciones.setEditable(false);
         panelPuntuaciones.add(new JScrollPane(areaPuntuaciones), BorderLayout.CENTER);
-        panelPuntuaciones.setMaximumSize(new Dimension(Integer.MAX_VALUE,850));
+        panelPuntuaciones.setMaximumSize(new Dimension(Integer.MAX_VALUE, 850));
         panelIzquierdo.add(panelPuntuaciones);
+
 
         JPanel panelDerecho = new JPanel(new GridLayout(4, 5, 5, 5));
         panelDerecho.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 10));
 
         inicializarCartas();
         botonesCartas = new JButton[4][5];
-        ImageIcon imagenCartaOculta = new ImageIcon(InterfazGrafica.getCartasOcultas(modoDeJuego));
-        Image imagenCartaOcultaEscalada = imagenCartaOculta.getImage().getScaledInstance(115, 200, Image.SCALE_SMOOTH);
-        ImageIcon imagenCubierta = new ImageIcon(imagenCartaOcultaEscalada);
+        imagenCubierta = new ImageIcon(new ImageIcon(InterfazGrafica.getCartasOcultas(modoDeJuego))
+                .getImage().getScaledInstance(115, 200, Image.SCALE_SMOOTH));
 
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 5; j++) {
@@ -100,7 +98,7 @@ public class Memorama {
                 final int fila = i;
                 final int columna = j;
                 botonesCartas[i][j].addActionListener(e -> {
-                    if (!cartaBloqueada && !cartas[fila][columna].isEncontrada() && !cartas[fila][columna].isVolteada()) {
+                    if (!bloqueado && !cartas[fila][columna].isEncontrada() && !cartas[fila][columna].isVolteada()) {
                         seleccionarCarta(fila, columna);
 
                     }
@@ -153,7 +151,52 @@ public class Memorama {
         ventana.add(panelPrincipal);
         ventana.setVisible(true);
     }
-  
+
+    private void seleccionarCarta(int fila, int columna) {
+        cartas[fila][columna].setVolteada(true);
+        botonesCartas[fila][columna].setIcon(obtenerImagenCarta(cartas[fila][columna]));
+        if (primeraSeleccion == null) {
+            primeraSeleccion = cartas[fila][columna];
+            primeraSeleccionPos = new int[]{fila, columna};
+        } else {
+            bloqueado = true;
+            timer = new Timer(1000, e -> {
+                if (primeraSeleccion.esIgualA(cartas[fila][columna])) {
+                    primeraSeleccion.setEncontrada(true);
+                    cartas[fila][columna].setEncontrada(true);
+                    botonesCartas[primeraSeleccionPos[0]][primeraSeleccionPos[1]].setEnabled(false);
+                    botonesCartas[fila][columna].setEnabled(false);
+                    puntuaciones.set(turnoActual, puntuaciones.get(turnoActual) + 1);
+                    areaPuntuaciones.setText(getAvisoDePuntuacion());
+                    avisoTurno.setText(getAvisoDeTurno(modoDeJuego));
+                    if (juegoTerminado()) {
+                        determinarGanador();
+                    }
+                } else {
+                    primeraSeleccion.setVolteada(false);
+                    cartas[fila][columna].setVolteada(false);
+                    botonesCartas[primeraSeleccionPos[0]][primeraSeleccionPos[1]].setIcon(imagenCubierta);
+                    botonesCartas[fila][columna].setIcon(imagenCubierta);
+                    siguienteTurno();
+                }
+                primeraSeleccion = null;
+                bloqueado = false;
+                timer.stop();
+            });
+            timer.setRepeats(false);
+            timer.start();
+        }
+    }
+    private ImageIcon obtenerImagenCarta(Carta carta) {
+        return carta.getImagen();
+    }
+
+
+    private void siguienteTurno() {
+        turnoActual = (turnoActual + 1) % jugadores.size();
+        avisoTurno.setText(getAvisoDeTurno(modoDeJuego));
+    }
+
     public String getAvisoDeTurno(int modo) {
         String jugador = jugadores.get(turnoActual);
         return switch (modo) {
@@ -173,7 +216,7 @@ public class Memorama {
         };
     }
 
-  public String getAvisoDePuntuacion() {
+    public String getAvisoDePuntuacion() {
         StringBuilder sb = new StringBuilder();
         sb.append("         \uD83C\uDFC6   Puntuación   \uD83C\uDFC6      \n\n");
         for (int i = 0; i < jugadores.size(); i++) {
@@ -188,7 +231,6 @@ public class Memorama {
         }
         return sb.toString();
     }
-  
     public void iniciarMemorama() {
         InterfazGrafica.menuInicial();
         jugadores = new ArrayList<>();
@@ -203,17 +245,6 @@ public class Memorama {
         modoDeJuego = InterfazGrafica.solicitarModoDeJuego();
         menuDeJuego();
     }
-
-    private void siguienteTurno() {
-        turnoActual = (turnoActual + 1) % jugadores.size();
-        avisoTurno.setText(getAvisoDeTurno(modoDeJuego));
-        areaPuntuaciones.setText(getAvisoDePuntuacion());
-    }
-
-    private ImageIcon obtenerImagenCarta(Carta carta) {
-        return carta.getImagen();
-    }
-
     private void inicializarCartas() {
         cartas = new Carta[4][5];
         List<Carta> paresCartas = new ArrayList<>();
@@ -256,41 +287,6 @@ public class Memorama {
         }
     }
 
-    private void seleccionarCarta(int fila, int columna) {
-        cartas[fila][columna].setVolteada(true);
-        botonesCartas[fila][columna].setIcon(obtenerImagenCarta(cartas[fila][columna]));
-        if (primeraCartaSeleccionada == null) {
-            primeraCartaSeleccionada = cartas[fila][columna];
-            posicionCartaSeleccionada = new int[]{fila, columna};
-        } else {
-            cartaBloqueada = true;
-            timer = new Timer(1000, e -> {
-                if (primeraCartaSeleccionada.esIgualA(cartas[fila][columna])) {
-                    primeraCartaSeleccionada.setEncontrada(true);
-                    cartas[fila][columna].setEncontrada(true);
-                    botonesCartas[posicionCartaSeleccionada[0]][posicionCartaSeleccionada[1]].setEnabled(false);
-                    botonesCartas[fila][columna].setEnabled(false);
-                    puntuaciones.set(turnoActual, puntuaciones.get(turnoActual) + 1);
-                    areaPuntuaciones.setText(getAvisoDePuntuacion());
-                    avisoTurno.setText(getAvisoDeTurno(modoDeJuego));
-                    if (juegoTerminado()) {
-                        determinarGanador();
-                    }
-                } else {
-                    primeraCartaSeleccionada.setVolteada(false);
-                    cartas[fila][columna].setVolteada(false);
-                    botonesCartas[posicionCartaSeleccionada[0]][posicionCartaSeleccionada[1]].setIcon(imagenCubierta);
-                    botonesCartas[fila][columna].setIcon(imagenCubierta);
-                    siguienteTurno();
-                }
-                primeraCartaSeleccionada = null;
-                cartaBloqueada = false;
-                timer.stop();
-            });
-            timer.setRepeats(false);
-            timer.start();
-        }
-    }
     private boolean juegoTerminado() {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 5; j++) {
@@ -301,6 +297,7 @@ public class Memorama {
         }
         return true;
     }
+
     private void determinarGanador() {
         int maxPuntos = Collections.max(puntuaciones);
         List<String> ganadores = new ArrayList<>();
@@ -311,18 +308,123 @@ public class Memorama {
             }
         }
 
-        String mensaje;
-        if (ganadores.size() == 1) {
-            mensaje = "¡Felicidades " + ganadores.get(0) + "!\nHas ganado con " + maxPuntos + " puntos.";
-        } else {
-            mensaje = "¡Empate entre:\n";
-            for (String ganador : ganadores) {
-                mensaje += "- " + ganador + "\n";
-            }
-            mensaje += "Todos con " + maxPuntos + " puntos.";
+        JPanel panelGanador = new JPanel(new BorderLayout(10, 10));
+        panelGanador.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        Color colorFuente = null;
+        switch (modoDeJuego) {
+            case 1 -> colorFuente = new Color(243, 155, 14);
+            case 2 -> colorFuente = new Color(43, 151, 64);
+            case 3 -> colorFuente = new Color(112, 171, 149);
         }
 
-        JOptionPane.showMessageDialog(null, mensaje, "¡Juego Terminado!", JOptionPane.INFORMATION_MESSAGE);
+        JLabel titulo = new JLabel("FIN DEL JUEGO", JLabel.CENTER);
+        titulo.setFont(new Font("Noto Sans", Font.BOLD, 30));
+        titulo.setForeground(colorFuente);
+        panelGanador.add(titulo, BorderLayout.NORTH);
+
+        ImageIcon imagenGanador = new ImageIcon(InterfazGrafica.getImagenGanador(modoDeJuego));
+        JLabel labelImagen = new JLabel(imagenGanador, JLabel.CENTER);
+        panelGanador.add(labelImagen, BorderLayout.CENTER);
+
+        String mensaje;
+        if (ganadores.size() == 1) {
+            mensaje = "<html><center> \uD83C\uDFC6 <br>Felicidades " + ganadores.get(0) + "<br>Has ganado con " + maxPuntos + " puntos.</center></html>";
+        } else {
+            mensaje = "<html><center> \uD83C\uDFC6 <br>Empate entre:<br>";
+            for (String ganador : ganadores) {
+                mensaje += "- " + ganador + "<br>";
+            }
+            mensaje += "Todos con " + maxPuntos + " puntos.</center></html>";
+        }
+
+        JPanel panelInferior = new JPanel(new BorderLayout(10, 10));
+        panelInferior.setOpaque(false);
+
+        JLabel labelMensaje = new JLabel(mensaje, JLabel.CENTER);
+        labelMensaje.setFont(new Font("Noto Sans", Font.PLAIN, 20));
+        labelMensaje.setForeground(colorFuente);
+        panelInferior.add(labelMensaje, BorderLayout.NORTH);
+
+        JPanel panelBotones = new JPanel(new GridLayout(1, 2, 20, 20));
+        panelBotones.setBorder(BorderFactory.createEmptyBorder(20, 50, 0, 50));
+        panelBotones.setOpaque(false);
+
+        JButton botonReiniciar = new JButton(" Volver a jugar ");
+        JButton botonSalir = new JButton(" Salir ");
+
+        Font fuenteBotones = new Font("Noto Sans", Font.BOLD, 18);
+        Color colorBoton = new Color(220, 220, 220);
+
+        botonReiniciar.setFont(fuenteBotones);
+        botonReiniciar.setBackground(colorBoton);
+        botonReiniciar.setFocusPainted(false);
+
+        botonSalir.setFont(fuenteBotones);
+        botonSalir.setBackground(colorBoton);
+        botonSalir.setFocusPainted(false);
+
+        panelBotones.add(botonReiniciar);
+        panelBotones.add(botonSalir);
+
+        panelInferior.add(panelBotones, BorderLayout.SOUTH);
+        panelGanador.add(panelInferior, BorderLayout.SOUTH);
+
+        JDialog dialogoGanador = new JDialog();
+        dialogoGanador.setTitle("\uD83C\uDF89 Juego Terminado");
+        dialogoGanador.setModal(true);
+        dialogoGanador.setContentPane(panelGanador);
+        dialogoGanador.pack();
+        dialogoGanador.setLocationRelativeTo(null);
+        dialogoGanador.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
+        botonReiniciar.addActionListener(e -> {
+            dialogoGanador.dispose();
+            Window ventanaActual = SwingUtilities.getWindowAncestor(avisoTurno);
+            ventanaActual.dispose();
+            reiniciarJuego();
+        });
+
+        botonSalir.addActionListener(e -> {
+            dialogoGanador.dispose();
+            Window ventanaActual = SwingUtilities.getWindowAncestor(avisoTurno);
+            ventanaActual.dispose();
+            mostrarAgradecimiento();
+        });
+
+        dialogoGanador.setVisible(true);
     }
-  
+
+    private void reiniciarJuego() {
+        puntuaciones = new ArrayList<>();
+        for (int i = 0; i < jugadores.size(); i++) {
+            puntuaciones.add(0);
+        }
+        turnoActual = 0;
+
+        modoDeJuego = InterfazGrafica.solicitarModoDeJuego();
+        menuDeJuego();
+    }
+
+    private void mostrarAgradecimiento() {
+        JFrame frameAgradecimiento = new JFrame();
+        frameAgradecimiento.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        JPanel panelAgradecimiento = new JPanel(new BorderLayout());
+        ImageIcon imagenAgradecimiento = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\Agradecimiento.png");
+        JLabel labelImagen = new JLabel(imagenAgradecimiento, JLabel.CENTER);
+        panelAgradecimiento.add(labelImagen, BorderLayout.CENTER);
+
+        frameAgradecimiento.setContentPane(panelAgradecimiento);
+        frameAgradecimiento.pack();
+        frameAgradecimiento.setLocationRelativeTo(null);
+        frameAgradecimiento.setVisible(true);
+
+        Timer timer = new Timer(5000, e -> {
+            frameAgradecimiento.dispose();
+            System.exit(0);
+        });
+        timer.setRepeats(false);
+        timer.start();
+    }
 }

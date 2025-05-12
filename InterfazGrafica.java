@@ -275,18 +275,18 @@ public class InterfazGrafica {
         JPanel panelFutbolMatch = new JPanel(new BorderLayout(5, 5));
         JPanel panelGeoMatch = new JPanel(new BorderLayout(5, 5));
 
-        //ImageIcon imagenNaruto = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\cartasNarutoImagenes\\menuN.png");
-        ImageIcon imagenNaruto = new ImageIcon("C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasNarutoImagenes\\menuN.png");
+        ImageIcon imagenNaruto = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\cartasNarutoImagenes\\menuN.png");
+        // ImageIcon imagenNaruto = new ImageIcon("C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasNarutoImagenes\\menuN.png");
         Image imagenEscaladaN = imagenNaruto.getImage().getScaledInstance(350, 550, Image.SCALE_SMOOTH);
         imagenNaruto = new ImageIcon(imagenEscaladaN);
 
-        //ImageIcon imagenFutbolMatch = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\cartasFutbolImagenes\\menuFutbol.png");
-        ImageIcon imagenFutbolMatch = new ImageIcon("C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasFutbolImagenes\\menuFutbol.png");
+        ImageIcon imagenFutbolMatch = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\cartasFutbolImagenes\\menuFutbol.png");
+        // ImageIcon imagenFutbolMatch = new ImageIcon("C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasFutbolImagenes\\menuFutbol.png");
         Image imagenEscaladaF = imagenFutbolMatch.getImage().getScaledInstance(350, 550, Image.SCALE_SMOOTH);
         imagenFutbolMatch = new ImageIcon(imagenEscaladaF);
 
-        //ImageIcon imagenGeoMatch = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\cartasGeoMatchImagenes\\menuGeo.png");
-        ImageIcon imagenGeoMatch = new ImageIcon("C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasGeoMatchImagenes\\menuGeo.png");
+        ImageIcon imagenGeoMatch = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\cartasGeoMatchImagenes\\menuGeo.png");
+        // ImageIcon imagenGeoMatch = new ImageIcon("C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasGeoMatchImagenes\\menuGeo.png");
         Image imagenEscaladaG = imagenGeoMatch.getImage().getScaledInstance(350, 550, Image.SCALE_SMOOTH);
         imagenGeoMatch = new ImageIcon(imagenEscaladaG);
 
@@ -447,5 +447,18 @@ public class InterfazGrafica {
             default -> JOptionPane.showMessageDialog(null, "Modo no válido", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+
+    public static String getImagenGanador(int modoDeJuego) {
+        return switch (modoDeJuego) {
+            case 1 -> "C:\\Users\\PC OSTRICH\\Practica-7\\NarutoFinish.png";
+            // case 1 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasNarutoImagenes\\fondoNaruto.png";
+            case 2 -> "C:\\Users\\PC OSTRICH\\Practica-7\\FutbolFinish.png";
+            // case 2 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasFutbolImagenes\\fondoFut.png";
+            case 3 -> "C:\\Users\\PC OSTRICH\\Practica-7\\GeoFinish.png";
+            // case 3 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasGeoMatchImagenes\\PaisGeo.png";
+            default -> "";
+        };
+    }
+
 }
 
