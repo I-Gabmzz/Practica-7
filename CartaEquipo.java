@@ -39,8 +39,8 @@ public class CartaEquipo extends Carta {
         }else{
             nombreImagen = nombreEquipo + ".png";
         }
-        String ruta = "C:\\Users\\14321\\Downloads\\Practica-7\\cartasFutbolImagenes\\" + nombreImagen;
-        // String ruta = "C:\\Users\\PC OSTRICH\\Practica-7\\cartasFutbolImagenes" + nombreImagen;
+        // String ruta = "C:\\Users\\14321\\Downloads\\Practica-7\\cartasFutbolImagenes\\" + nombreImagen;
+        String ruta = "C:\\Users\\PC OSTRICH\\Practica-7\\cartasFutbolImagenes" + nombreImagen;
         ImageIcon icono = new ImageIcon(ruta);
         Image imagenEscalada = icono.getImage().getScaledInstance(115, 200, Image.SCALE_SMOOTH);
         return new ImageIcon(imagenEscalada);
