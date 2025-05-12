@@ -11,6 +11,7 @@ public class Memorama {
     private List<Integer> puntuaciones;
     private int turnoActual;
     private JLabel avisoTurno;
+    private JTextArea areaPuntuaciones;
     private Carta[][] cartas;
 
     public static void main(String[] args) {
@@ -194,6 +195,11 @@ public class Memorama {
     private void siguienteTurno() {
         turnoActual = (turnoActual + 1) % jugadores.size();
         avisoTurno.setText(getAvisoDeTurno(modoDeJuego));
+        areaPuntuaciones.setText(getAvisoDePuntuacion());
+    }
+
+    private ImageIcon obtenerImagenCarta(Carta carta) {
+        return carta.getImagen();
     }
 
     private void inicializarCartas() {
