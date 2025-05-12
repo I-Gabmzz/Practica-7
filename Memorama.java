@@ -82,6 +82,7 @@ public class Memorama {
         JPanel panelDerecho = new JPanel(new GridLayout(4, 5, 5, 5));
         panelDerecho.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 10));
 
+        inicializarCartas();
         botonesCartas = new JButton[4][5];
         ImageIcon imagenCartaOculta = new ImageIcon(InterfazGrafica.getCartasOcultas(modoDeJuego));
         Image imagenCartaOcultaEscalada = imagenCartaOculta.getImage().getScaledInstance(115, 200, Image.SCALE_SMOOTH);
@@ -96,8 +97,13 @@ public class Memorama {
                 botonesCartas[i][j].setContentAreaFilled(false);
                 botonesCartas[i][j].setFocusPainted(false);
 
+                final int fila = i;
+                final int columna = j;
                 botonesCartas[i][j].addActionListener(e -> {
+                    if (!cartaBloqueada && !cartas[fila][columna].isEncontrada() && !cartas[fila][columna].isVolteada()) {
+                        seleccionarCarta(fila, columna);
 
+                    }
                 });
                 panelDerecho.add(botonesCartas[i][j]);
             }
