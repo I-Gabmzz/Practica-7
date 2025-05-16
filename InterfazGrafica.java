@@ -29,8 +29,8 @@ public class InterfazGrafica {
         panelDeTitulo.add(labelBienvenida);
 
         JPanel panelCentro = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        //ImageIcon imagenIcono = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\pantallaInicial.gif");
-        ImageIcon imagenIcono = new ImageIcon("C:\\Users\\14321\\IdeaProjects\\Practica-7\\pantallaInicial.gif");
+        ImageIcon imagenIcono = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\pantallaInicial.gif");
+        // ImageIcon imagenIcono = new ImageIcon("C:\\Users\\14321\\IdeaProjects\\Practica-7\\pantallaInicial.gif");
         JLabel labelImagen = new JLabel(imagenIcono);
         panelCentro.add(labelImagen);
 
@@ -277,18 +277,18 @@ public class InterfazGrafica {
         JPanel panelFutbolMatch = new JPanel(new BorderLayout(5, 5));
         JPanel panelGeoMatch = new JPanel(new BorderLayout(5, 5));
 
-        //ImageIcon imagenNaruto = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\cartasNarutoImagenes\\menuN.png");
-         ImageIcon imagenNaruto = new ImageIcon("C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasNarutoImagenes\\menuN.png");
+        ImageIcon imagenNaruto = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\cartasNarutoImagenes\\menuN.png");
+        //ImageIcon imagenNaruto = new ImageIcon("C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasNarutoImagenes\\menuN.png");
         Image imagenEscaladaN = imagenNaruto.getImage().getScaledInstance(350, 550, Image.SCALE_SMOOTH);
         imagenNaruto = new ImageIcon(imagenEscaladaN);
 
-        //ImageIcon imagenFutbolMatch = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\cartasFutbolImagenes\\menuFutbol.png");
-        ImageIcon imagenFutbolMatch = new ImageIcon("C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasFutbolImagenes\\menuFutbol.png");
+        ImageIcon imagenFutbolMatch = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\cartasFutbolImagenes\\menuFutbol.png");
+        //ImageIcon imagenFutbolMatch = new ImageIcon("C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasFutbolImagenes\\menuFutbol.png");
         Image imagenEscaladaF = imagenFutbolMatch.getImage().getScaledInstance(350, 550, Image.SCALE_SMOOTH);
         imagenFutbolMatch = new ImageIcon(imagenEscaladaF);
 
-        //ImageIcon imagenGeoMatch = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\cartasGeoMatchImagenes\\menuGeo.png");
-        ImageIcon imagenGeoMatch = new ImageIcon("C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasGeoMatchImagenes\\menuGeo.png");
+        ImageIcon imagenGeoMatch = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\cartasGeoMatchImagenes\\menuGeo.png");
+        //ImageIcon imagenGeoMatch = new ImageIcon("C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasGeoMatchImagenes\\menuGeo.png");
         Image imagenEscaladaG = imagenGeoMatch.getImage().getScaledInstance(350, 550, Image.SCALE_SMOOTH);
         imagenGeoMatch = new ImageIcon(imagenEscaladaG);
 
@@ -378,12 +378,12 @@ public class InterfazGrafica {
     // Metodo con el cual se obtiene el banner de la ventana de la GUI a traves del modo de juego seleccionado. 
     public static String getBannerPrincipal(int modo) {
         return switch (modo) {
-            //case 1 -> "C:\\Users\\PC OSTRICH\\Practica-7\\bannerNaruto.png";
-            case 1 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\bannerNaruto.png";
-            //case 2 -> "C:\\Users\\PC OSTRICH\\Practica-7\\bannerFutbolMatch.png";
-            case 2 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\bannerFutbolMatch.png";
-            //case 3 -> "C:\\Users\\PC OSTRICH\\Practica-7\\bannerGeoMatch.png";
-            case 3 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\bannerGeoMatch.png";
+            case 1 -> "C:\\Users\\PC OSTRICH\\Practica-7\\bannerNaruto.png";
+            //case 1 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\bannerNaruto.png";
+            case 2 -> "C:\\Users\\PC OSTRICH\\Practica-7\\bannerFutbolMatch.png";
+            //case 2 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\bannerFutbolMatch.png";
+            case 3 -> "C:\\Users\\PC OSTRICH\\Practica-7\\bannerGeoMatch.png";
+            //case 3 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\bannerGeoMatch.png";
             default -> "";
         };
     }
@@ -391,12 +391,12 @@ public class InterfazGrafica {
     // Metodo con el cual se obtiene el bannerCentral de la ventana de la GUI a traves del modo de juego seleccionado. 
     public static String getBannerCentral(int modo) {
         return switch (modo) {
-            //case 1 -> "C:\\Users\\PC OSTRICH\\Practica-7\\NarutoCentral.gif";
-            case 1 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\NarutoCentral.gif";
-            //case 2 -> "C:\\Users\\PC OSTRICH\\Practica-7\\futbolMatchCentral.gif";
-            case 2 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\futbolMatchCentral.gif";
-            //case 3 -> "C:\\Users\\PC OSTRICH\\Practica-7\\GeoMatchCentral.gif";
-            case 3 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\GeoMatchCentral.gif";
+            case 1 -> "C:\\Users\\PC OSTRICH\\Practica-7\\NarutoCentral.gif";
+            //case 1 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\NarutoCentral.gif";
+            case 2 -> "C:\\Users\\PC OSTRICH\\Practica-7\\futbolMatchCentral.gif";
+            //case 2 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\futbolMatchCentral.gif";
+            case 3 -> "C:\\Users\\PC OSTRICH\\Practica-7\\GeoMatchCentral.gif";
+            //case 3 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\GeoMatchCentral.gif";
             default -> "";
         };
     }
@@ -404,12 +404,12 @@ public class InterfazGrafica {
     // Metodo con el cual se obtiene la parte trasera de las cartas para mostrarlas en la GUI a traves del modo de juego seleccionado. 
     public static String getCartasOcultas(int modo) {
         return switch (modo) {
-            //case 1 -> "C:\\Users\\PC OSTRICH\\Practica-7\\cartasNarutoImagenes\\fondoNaruto.png";
-            case 1 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasNarutoImagenes\\fondoNaruto.png";
-            //case 2 -> "C:\\Users\\PC OSTRICH\\Practica-7\\cartasFutbolImagenes\\fondoFut.png";
-            case 2 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasFutbolImagenes\\fondoFut.png";
-            //case 3 -> "C:\\Users\\PC OSTRICH\\Practica-7\\cartasGeoMatchImagenes\\PaisGeo.png";
-            case 3 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasGeoMatchImagenes\\PaisGeo.png";
+            case 1 -> "C:\\Users\\PC OSTRICH\\Practica-7\\cartasNarutoImagenes\\fondoNaruto.png";
+            //case 1 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasNarutoImagenes\\fondoNaruto.png";
+            case 2 -> "C:\\Users\\PC OSTRICH\\Practica-7\\cartasFutbolImagenes\\fondoFut.png";
+            //case 2 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasFutbolImagenes\\fondoFut.png";
+            case 3 -> "C:\\Users\\PC OSTRICH\\Practica-7\\cartasGeoMatchImagenes\\PaisGeo.png";
+            //case 3 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasGeoMatchImagenes\\PaisGeo.png";
             default -> "";
         };
     }
@@ -458,12 +458,12 @@ public class InterfazGrafica {
     // Metodo con el cual se obtiene la imagen a imprimir cuando exista un ganador en la GUI a traves del modo de juego seleccionado. 
     public static String getImagenGanador(int modoDeJuego) {
         return switch (modoDeJuego) {
-            //case 1 -> "C:\\Users\\PC OSTRICH\\Practica-7\\NarutoFinish.png";
-            case 1 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasNarutoImagenes\\fondoNaruto.png";
-            //case 2 -> "C:\\Users\\PC OSTRICH\\Practica-7\\FutbolFinish.png";
-            case 2 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasFutbolImagenes\\fondoFut.png";
-            //case 3 -> "C:\\Users\\PC OSTRICH\\Practica-7\\GeoFinish.png";
-            case 3 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasGeoMatchImagenes\\PaisGeo.png";
+            case 1 -> "C:\\Users\\PC OSTRICH\\Practica-7\\NarutoFinish.png";
+            //case 1 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasNarutoImagenes\\fondoNaruto.png";
+            case 2 -> "C:\\Users\\PC OSTRICH\\Practica-7\\FutbolFinish.png";
+            //case 2 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasFutbolImagenes\\fondoFut.png";
+            case 3 -> "C:\\Users\\PC OSTRICH\\Practica-7\\GeoFinish.png";
+            //case 3 -> "C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasGeoMatchImagenes\\PaisGeo.png";
             default -> "";
         };
     }
