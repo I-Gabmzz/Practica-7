@@ -155,38 +155,53 @@ public class Memorama {
     private void seleccionarCarta(int fila, int columna) {
         cartas[fila][columna].setVolteada(true);
         botonesCartas[fila][columna].setIcon(obtenerImagenCarta(cartas[fila][columna]));
+
+        if (cartas[fila][columna] instanceof CartaClan && ((CartaClan) cartas[fila][columna]).esPoder()) {
+            ((CartaClan) cartas[fila][columna]).distincion(this);
+            botonesCartas[fila][columna].setEnabled(false);
+
+            if (primeraSeleccion != null) {
+                primeraSeleccion.setVolteada(false);
+                botonesCartas[primeraSeleccionPos[0]][primeraSeleccionPos[1]].setIcon(imagenCubierta);
+                primeraSeleccion = null;
+            }
+
+            return;
+        }
+
         if (primeraSeleccion == null) {
             primeraSeleccion = cartas[fila][columna];
             primeraSeleccionPos = new int[]{fila, columna};
-        } else {
-            bloqueado = true;
-            timer = new Timer(1000, e -> {
-                if (primeraSeleccion.esIgualA(cartas[fila][columna])) {
-                    primeraSeleccion.setEncontrada(true);
-                    cartas[fila][columna].setEncontrada(true);
-                    botonesCartas[primeraSeleccionPos[0]][primeraSeleccionPos[1]].setEnabled(false);
-                    botonesCartas[fila][columna].setEnabled(false);
-                    puntuaciones.set(turnoActual, puntuaciones.get(turnoActual) + 1);
-                    areaPuntuaciones.setText(getAvisoDePuntuacion());
-                    avisoTurno.setText(getAvisoDeTurno(modoDeJuego));
-                    if (juegoTerminado()) {
-                        determinarGanador();
+    } else {
+                bloqueado = true;
+                timer = new Timer(1000, e -> {
+                    if (primeraSeleccion.esIgualA(cartas[fila][columna])) {
+                        primeraSeleccion.setEncontrada(true);
+                        cartas[fila][columna].setEncontrada(true);
+                        botonesCartas[primeraSeleccionPos[0]][primeraSeleccionPos[1]].setEnabled(false);
+                        botonesCartas[fila][columna].setEnabled(false);
+                        puntuaciones.set(turnoActual, puntuaciones.get(turnoActual) + 1);
+                        areaPuntuaciones.setText(getAvisoDePuntuacion());
+
+                        if (juegoTerminado()) {
+                            determinarGanador();
+                        }
+                    } else {
+                        primeraSeleccion.setVolteada(false);
+                        cartas[fila][columna].setVolteada(false);
+                        botonesCartas[primeraSeleccionPos[0]][primeraSeleccionPos[1]].setIcon(imagenCubierta);
+                        botonesCartas[fila][columna].setIcon(imagenCubierta);
+                        siguienteTurno();
                     }
-                } else {
-                    primeraSeleccion.setVolteada(false);
-                    cartas[fila][columna].setVolteada(false);
-                    botonesCartas[primeraSeleccionPos[0]][primeraSeleccionPos[1]].setIcon(imagenCubierta);
-                    botonesCartas[fila][columna].setIcon(imagenCubierta);
-                    siguienteTurno();
-                }
-                primeraSeleccion = null;
-                bloqueado = false;
-                timer.stop();
-            });
-            timer.setRepeats(false);
-            timer.start();
+
+                    primeraSeleccion = null;
+                    bloqueado = false;
+                    timer.stop();
+                });
+                timer.start();
+            }
         }
-    }
+
     private ImageIcon obtenerImagenCarta(Carta carta) {
         return carta.getImagen();
     }
@@ -250,15 +265,20 @@ public class Memorama {
         List<Carta> paresCartas = new ArrayList<>();
         switch(modoDeJuego) {
             case 1:
-                String[] clanes = {"Konoha", "Sunagakure", "Takigakure", "Kusugakure", "Iwagakure",
-                        "Amegakure", "Kirigakure", "Kumogakure", "Otogakure", "Yugakure"};
-                String[] personajes = {"Naruto","Gaara", "Kakuzu", "Karin", "Deidara",
-                        "Pain", "Zabuza","Killer Bee", "Orochimaru", "Hidan"};
+                String[] clanes = {"Konoha", "Sunagakure", "Takigakure", "Iwagakure",
+                        "Amegakure", "Kirigakure", "Kumogakure", "Otogakure"};
+                String[] personajes = {"Naruto","Gaara", "Kakuzu", "Deidara",
+                        "Pain", "Zabuza","Killer Bee", "Orochimaru"};
 
                 for (int i = 0; i < clanes.length; i++) {
                     paresCartas.add(new CartaClan(clanes[i], personajes[i], true));
                     paresCartas.add(new CartaClan(clanes[i], personajes[i], false));
                 }
+
+                paresCartas.add(new CartaClan("shuriken"));
+                paresCartas.add(new CartaClan("papelBomba"));
+                paresCartas.add(new CartaClan("bijuu"));
+                paresCartas.add(new CartaClan("sanacion"));
                 break;
             case 2:
                 String[] equipos = {"Ajax", "RealMadrid", "Manchester", "America",
@@ -285,6 +305,12 @@ public class Memorama {
                 cartas[i][j] = paresCartas.get(i * 5 + j);
             }
         }
+    }
+
+    public void aplicarEfectoPoder(int puntos) {
+        puntuaciones.set(turnoActual, puntuaciones.get(turnoActual) + puntos);
+        areaPuntuaciones.setText(getAvisoDePuntuacion());
+        siguienteTurno();
     }
 
     private boolean juegoTerminado() {

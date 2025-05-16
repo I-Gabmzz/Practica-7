@@ -28,4 +28,6 @@ public abstract class Carta {
 
     public abstract boolean esIgualA(Carta carta);
     public abstract ImageIcon getImagen();
+    public abstract void distincion(Memorama memorama);
+
 }
