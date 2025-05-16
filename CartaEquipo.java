@@ -36,10 +36,9 @@ public class CartaEquipo extends Carta {
     // Metodo derivado de la herencia de la clase Carta, este metodo tiene la finalidad de comparar una carta con otra.
     @Override
     public boolean esIgualA(Carta carta) {
-        if (this.esEspecial || (carta instanceof CartaEquipo && ((CartaEquipo) carta).esEspecial)) {
-            return false;
+        if (this.esEspecial && carta instanceof CartaEquipo) {
+            return this.tipoEspecial.equals(((CartaEquipo)carta).getTipoEspecial());
         }
-
         return carta instanceof CartaEquipo otraCarta &&
                 this.nombreLiga.equals(otraCarta.nombreLiga);
     }
@@ -66,18 +65,20 @@ public class CartaEquipo extends Carta {
     public void distincion(Memorama memorama) {
         int columna = memorama.getUltimaColumnaSeleccionada();
         int fila = memorama.getUltimaFilaSeleccionada();
+        this.setEncontrada(true);
+        memorama.getBotonCarta(fila,columna).setEnabled(false);
         if (tipoEspecial.equals("TarjetaRoja")) {
+            JOptionPane.showMessageDialog(null, "Tarjeta Roja, has perdido el turno");
             memorama.siguienteTurno();
             memorama.getBotonCarta(fila,columna).setEnabled(false);
-            JOptionPane.showMessageDialog(null, "Tarjeta Roja, has perdido el turno");
         }else if(tipoEspecial.equals("Var")){
-            memorama.getBotonCarta(fila,columna).setEnabled(false);
             JOptionPane.showMessageDialog(null, "Var, se muestran todas las cartas");
             memorama.mostrarTodasLasCartas();
-        }else if(tipoEspecial.equals("FueraDeJuego")){
             memorama.getBotonCarta(fila,columna).setEnabled(false);
-            memorama.revolverCartasNoEmparejadas();
+        }else if(tipoEspecial.equals("FueraDeJuego")){
             JOptionPane.showMessageDialog(null, "Fuera de juego, se revuelven todas las cartas");
+            memorama.revolverCartasNoEmparejadas();
+            memorama.getBotonCarta(fila,columna).setEnabled(false);
         }
     }
 }
