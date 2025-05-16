@@ -1,3 +1,4 @@
+//Se importan las librerias necesarias para el funcionamiento del programa
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -5,7 +6,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
+//Se declara la clase 
 public class Memorama {
+    //Se definen los atributos de la clase 
     private int modoDeJuego;
     private List<String> jugadores;
     private List<Integer> puntuaciones;
@@ -19,12 +22,16 @@ public class Memorama {
     private int[] primeraSeleccionPos;
     private boolean bloqueado;
     private JTextArea areaPuntuaciones;
+    private int ultimaFilaSeleccionada;
+    private int ultimaColumnaSeleccionada;
 
+    //Método para ejecutar el programa
     public static void main(String[] args) {
         Memorama m = new Memorama();
         m.iniciarMemorama();
     }
 
+    //Método que muestra toda la interfaz del menÚ del juegador en donde se muestran cartas, turno y diversos componentes de la GUI
     public void menuDeJuego() {
         JFrame ventana = new JFrame(InterfazGrafica.getTituloDeModo(modoDeJuego));
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -152,66 +159,71 @@ public class Memorama {
         ventana.setVisible(true);
     }
 
+    //Método para seleccionar las cartas, en este método se les asignan los botones a cada carta para que funcionen correctamente
+    //además se maneja la lógica de si se encuentra un par se mantiene el turno y se le suma un punto, si no se encuentra un par se cambia al siguiente jugador,
+    //se evalua si se terminó el juego o no.
     private void seleccionarCarta(int fila, int columna) {
-        cartas[fila][columna].setVolteada(true);
-        botonesCartas[fila][columna].setIcon(obtenerImagenCarta(cartas[fila][columna]));
+        this.ultimaFilaSeleccionada = fila;
+        this.ultimaColumnaSeleccionada = columna;
 
-        if (cartas[fila][columna] instanceof CartaClan && ((CartaClan) cartas[fila][columna]).esPoder()) {
-            ((CartaClan) cartas[fila][columna]).distincion(this);
-            botonesCartas[fila][columna].setEnabled(false);
+        Carta cartaSeleccionada = cartas[fila][columna];
+        cartaSeleccionada.setVolteada(true);
+        botonesCartas[fila][columna].setIcon(obtenerImagenCarta(cartaSeleccionada));
 
+        if (cartaSeleccionada instanceof CartaEquipo && ((CartaEquipo)cartaSeleccionada).esEspecial()) {
+            ((CartaEquipo)cartaSeleccionada).distincion(this);
             if (primeraSeleccion != null) {
-                primeraSeleccion.setVolteada(false);
                 botonesCartas[primeraSeleccionPos[0]][primeraSeleccionPos[1]].setIcon(imagenCubierta);
+                primeraSeleccion.setVolteada(false);
                 primeraSeleccion = null;
             }
-
             return;
         }
-
         if (primeraSeleccion == null) {
-            primeraSeleccion = cartas[fila][columna];
+            primeraSeleccion = cartaSeleccionada;
             primeraSeleccionPos = new int[]{fila, columna};
-    } else {
-                bloqueado = true;
-                timer = new Timer(1000, e -> {
-                    if (primeraSeleccion.esIgualA(cartas[fila][columna])) {
-                        primeraSeleccion.setEncontrada(true);
-                        cartas[fila][columna].setEncontrada(true);
-                        botonesCartas[primeraSeleccionPos[0]][primeraSeleccionPos[1]].setEnabled(false);
-                        botonesCartas[fila][columna].setEnabled(false);
-                        puntuaciones.set(turnoActual, puntuaciones.get(turnoActual) + 1);
-                        areaPuntuaciones.setText(getAvisoDePuntuacion());
+        }else {
+            bloqueado = true;
+            timer = new Timer(1000, e -> {
+                if (primeraSeleccion.esIgualA(cartas[fila][columna])) {
+                    primeraSeleccion.setEncontrada(true);
+                    cartas[fila][columna].setEncontrada(true);
+                    botonesCartas[primeraSeleccionPos[0]][primeraSeleccionPos[1]].setEnabled(false);
+                    botonesCartas[fila][columna].setEnabled(false);
+                    puntuaciones.set(turnoActual, puntuaciones.get(turnoActual) + 1);
+                    areaPuntuaciones.setText(getAvisoDePuntuacion());
 
-                        if (juegoTerminado()) {
-                            determinarGanador();
-                        }
-                    } else {
-                        primeraSeleccion.setVolteada(false);
-                        cartas[fila][columna].setVolteada(false);
-                        botonesCartas[primeraSeleccionPos[0]][primeraSeleccionPos[1]].setIcon(imagenCubierta);
-                        botonesCartas[fila][columna].setIcon(imagenCubierta);
-                        siguienteTurno();
+                    if (juegoTerminado()) {
+                        determinarGanador();
                     }
+                } else {
+                    primeraSeleccion.setVolteada(false);
+                    cartas[fila][columna].setVolteada(false);
+                    botonesCartas[primeraSeleccionPos[0]][primeraSeleccionPos[1]].setIcon(imagenCubierta);
+                    botonesCartas[fila][columna].setIcon(imagenCubierta);
+                    siguienteTurno();
+                }
 
-                    primeraSeleccion = null;
-                    bloqueado = false;
-                    timer.stop();
-                });
-                timer.start();
-            }
+                primeraSeleccion = null;
+                bloqueado = false;
+                timer.stop();
+            });
+            timer.start();
         }
+    }
 
+    //Método para obtener la dirección de la imagen de la carta correspondiente
     private ImageIcon obtenerImagenCarta(Carta carta) {
         return carta.getImagen();
     }
 
-
-    private void siguienteTurno() {
+    //Método para pasar de turno entre los jugadores.
+    public void siguienteTurno() {
         turnoActual = (turnoActual + 1) % jugadores.size();
         avisoTurno.setText(getAvisoDeTurno(modoDeJuego));
     }
 
+    //Método para mostrar los turnos
     public String getAvisoDeTurno(int modo) {
         String jugador = jugadores.get(turnoActual);
         return switch (modo) {
@@ -231,6 +243,7 @@ public class Memorama {
         };
     }
 
+    //Método para mostrar la puntuación de los jugadores respectivamente.
     public String getAvisoDePuntuacion() {
         StringBuilder sb = new StringBuilder();
         sb.append("         \uD83C\uDFC6   Puntuación   \uD83C\uDFC6      \n\n");
@@ -246,6 +259,8 @@ public class Memorama {
         }
         return sb.toString();
     }
+
+    //Método para iniciar el memorama y jugar, en este método esta el flujo del juego.
     public void iniciarMemorama() {
         InterfazGrafica.menuInicial();
         jugadores = new ArrayList<>();
@@ -260,42 +275,43 @@ public class Memorama {
         modoDeJuego = InterfazGrafica.solicitarModoDeJuego();
         menuDeJuego();
     }
+
+    //Método para inicializar las cartas del memorama, además de que se revuelven.
     private void inicializarCartas() {
         cartas = new Carta[4][5];
         List<Carta> paresCartas = new ArrayList<>();
-        switch(modoDeJuego) {
+        switch (modoDeJuego) {
             case 1:
-                String[] clanes = {"Konoha", "Sunagakure", "Takigakure", "Iwagakure",
-                        "Amegakure", "Kirigakure", "Kumogakure", "Otogakure"};
-                String[] personajes = {"Naruto","Gaara", "Kakuzu", "Deidara",
-                        "Pain", "Zabuza","Killer Bee", "Orochimaru"};
+                String[] clanes = {"Konoha", "Sunagakure", "Takigakure", "Kusugakure", "Iwagakure",
+                        "Amegakure", "Kirigakure", "Kumogakure", "Otogakure", "Yugakure"};
+                String[] personajes = {"Naruto", "Gaara", "Kakuzu", "Karin", "Deidara",
+                        "Pain", "Zabuza", "Killer Bee", "Orochimaru", "Hidan"};
 
                 for (int i = 0; i < clanes.length; i++) {
                     paresCartas.add(new CartaClan(clanes[i], personajes[i], true));
                     paresCartas.add(new CartaClan(clanes[i], personajes[i], false));
                 }
-
-                paresCartas.add(new CartaClan("shuriken"));
-                paresCartas.add(new CartaClan("papelBomba"));
-                paresCartas.add(new CartaClan("bijuu"));
-                paresCartas.add(new CartaClan("sanacion"));
                 break;
             case 2:
                 String[] equipos = {"Ajax", "RealMadrid", "Manchester", "America",
-                        "BayernMunich", "Psg", "Juventus", "Galaxy", "Flamengo","BocaJuniors"};
-                String[] ligas ={"Eredivisie","LaLiga","Premier","LigaMX","Bundesliga","Ligue1","SerieA","Mls","Brasileirao","LigaArgentina"};
+                        "BayernMunich", "Psg", "Juventus", "Galaxy"};
+                String[] ligas = {"Eredivisie", "LaLiga", "Premier", "LigaMX", "Bundesliga", "Ligue1", "SerieA", "Mls"};
                 for (int i = 0; i < ligas.length; i++) {
-                    paresCartas.add(new CartaEquipo(equipos[i],ligas[i], true));
-                    paresCartas.add(new CartaEquipo(equipos[i],ligas[i], false));
+                    paresCartas.add(new CartaEquipo(equipos[i], ligas[i], true));
+                    paresCartas.add(new CartaEquipo(equipos[i], ligas[i], false));
                 }
+                paresCartas.add(new CartaEquipo("TarjetaRoja"));
+                paresCartas.add(new CartaEquipo("TarjetaRoja"));
+                paresCartas.add(new CartaEquipo("Var"));
+                paresCartas.add(new CartaEquipo("FueraDeJuego"));
                 break;
             case 3:
                 String[] paises = {"Mexico", "Alemania", "Australia", "Canada", "Egipto",
-                        "Francia", "Italia", "Japon", "Usa","ReinoUnido"};
-                String[] ciudades ={"Cdmx","Berlin","Sidney","Toronto","ElCairo","Paris","Roma","Tokio","NuevaYork","Londres"};
+                        "Francia", "Italia", "Japon", "Usa", "ReinoUnido"};
+                String[] ciudades = {"Cdmx", "Berlin", "Sidney", "Toronto", "ElCairo", "Paris", "Roma", "Tokio", "NuevaYork", "Londres"};
                 for (int i = 0; i < paises.length; i++) {
-                    paresCartas.add(new CartaPais(paises[i],ciudades[i], true));
-                    paresCartas.add(new CartaPais(paises[i],ciudades[i], false));
+                    paresCartas.add(new CartaPais(paises[i], ciudades[i], true));
+                    paresCartas.add(new CartaPais(paises[i], ciudades[i], false));
                 }
                 break;
         }
@@ -307,12 +323,7 @@ public class Memorama {
         }
     }
 
-    public void aplicarEfectoPoder(int puntos) {
-        puntuaciones.set(turnoActual, puntuaciones.get(turnoActual) + puntos);
-        areaPuntuaciones.setText(getAvisoDePuntuacion());
-        siguienteTurno();
-    }
-
+    //Método para determinar si el juego ya terminó.
     private boolean juegoTerminado() {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 5; j++) {
@@ -324,6 +335,7 @@ public class Memorama {
         return true;
     }
 
+    //Método para determinar un ganador en el juego.
     private void determinarGanador() {
         int maxPuntos = Collections.max(puntuaciones);
         List<String> ganadores = new ArrayList<>();
@@ -421,6 +433,7 @@ public class Memorama {
         dialogoGanador.setVisible(true);
     }
 
+    //Método para reiniciar el juego en caso de que el usuario quiera jugar otra vez y cambiar de modo.
     private void reiniciarJuego() {
         puntuaciones = new ArrayList<>();
         for (int i = 0; i < jugadores.size(); i++) {
@@ -432,12 +445,14 @@ public class Memorama {
         menuDeJuego();
     }
 
+    //Método para mostrar un mensaje de despedida al momento de terminar el juego.
     private void mostrarAgradecimiento() {
         JFrame frameAgradecimiento = new JFrame();
         frameAgradecimiento.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel panelAgradecimiento = new JPanel(new BorderLayout());
-        ImageIcon imagenAgradecimiento = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\Agradecimiento.png");
+        //ImageIcon imagenAgradecimiento = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\Agradecimiento.png");
+        ImageIcon imagenAgradecimiento = new ImageIcon("C:\\Users\\14321\\IdeaProjects\\Practica-7\\Agradecimiento.png");
         JLabel labelImagen = new JLabel(imagenAgradecimiento, JLabel.CENTER);
         panelAgradecimiento.add(labelImagen, BorderLayout.CENTER);
 
@@ -452,5 +467,68 @@ public class Memorama {
         });
         timer.setRepeats(false);
         timer.start();
+
+    }
+    //Método para obtener los botones de la carta y así tener un mejor control de ellos.
+    public JButton getBotonCarta(int fila, int columna) {
+        return botonesCartas[fila][columna];
+    }
+    //Método para saber la posición de la fila que se seleccionó
+    public int getUltimaFilaSeleccionada() {
+        return ultimaFilaSeleccionada;
+    }
+    //Método para saber la posición de la columna que se seleccionó
+    public int getUltimaColumnaSeleccionada() {
+        return ultimaColumnaSeleccionada;
+    }
+    //Método para mostrar todas las cartas del tablero restantes, solo se muestran las que no han sido descubiertas
+    public void mostrarTodasLasCartas() {
+        bloqueado = true;
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 5; j++) {
+                if (!cartas[i][j].isEncontrada() &&
+                        !cartas[i][j].isVolteada() &&
+                        botonesCartas[i][j].isEnabled()) {
+                    cartas[i][j].setVolteada(true);
+                    botonesCartas[i][j].setIcon(obtenerImagenCarta(cartas[i][j]));
+                }
+            }
+        }
+        Timer timer = new Timer(1000, e -> {
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 5; j++) {
+                    if (!cartas[i][j].isEncontrada() &&
+                            cartas[i][j].isVolteada() &&
+                            botonesCartas[i][j].isEnabled()) {
+                        cartas[i][j].setVolteada(false);
+                        botonesCartas[i][j].setIcon(imagenCubierta);
+                    }
+                }
+            }
+            bloqueado = false;
+            ((Timer) e.getSource()).stop();
+        });
+        timer.setRepeats(false);
+        timer.start();
+    }
+    //Método el cual revuelve las cartas y las coloca volteadas en el tablero, este método solo afecta a aquellas cartas que no han sido adivinadas.
+    public void revolverCartasNoEmparejadas() {
+        List<Carta> cartasNoEmparejadas = new ArrayList<>();
+        List<int[]> posicionesNoEmparejadas = new ArrayList<>();
+
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 5; j++) {
+                if (!cartas[i][j].isEncontrada() && !(cartas[i][j] instanceof CartaEquipo && ((CartaEquipo) cartas[i][j]).esEspecial())) {
+                    cartasNoEmparejadas.add(cartas[i][j]);
+                    posicionesNoEmparejadas.add(new int[]{i, j});
+                }
+            }
+        }
+        Collections.shuffle(cartasNoEmparejadas);
+        for (int k = 0; k < cartasNoEmparejadas.size(); k++) {
+            int[] pos = posicionesNoEmparejadas.get(k);
+            cartas[pos[0]][pos[1]] = cartasNoEmparejadas.get(k);
+            botonesCartas[pos[0]][pos[1]].setIcon(imagenCubierta);
+        }
     }
 }
