@@ -163,6 +163,22 @@ public class Memorama {
     //además se maneja la lógica de si se encuentra un par se mantiene el turno y se le suma un punto, si no se encuentra un par se cambia al siguiente jugador,
     //se evalua si se terminó el juego o no.
     private void seleccionarCarta(int fila, int columna) {
+        cartas[fila][columna].setVolteada(true);
+        botonesCartas[fila][columna].setIcon(obtenerImagenCarta(cartas[fila][columna]));
+
+        if (cartas[fila][columna] instanceof CartaClan && ((CartaClan) cartas[fila][columna]).esPoder()) {
+            ((CartaClan) cartas[fila][columna]).distincion(this);
+            botonesCartas[fila][columna].setEnabled(false);
+
+            if (primeraSeleccion != null) {
+                primeraSeleccion.setVolteada(false);
+                botonesCartas[primeraSeleccionPos[0]][primeraSeleccionPos[1]].setIcon(imagenCubierta);
+                primeraSeleccion = null;
+            }
+
+            return;
+        }
+
         this.ultimaFilaSeleccionada = fila;
         this.ultimaColumnaSeleccionada = columna;
 
@@ -291,6 +307,10 @@ public class Memorama {
                     paresCartas.add(new CartaClan(clanes[i], personajes[i], true));
                     paresCartas.add(new CartaClan(clanes[i], personajes[i], false));
                 }
+                paresCartas.add(new CartaClan("shuriken"));
+                paresCartas.add(new CartaClan("papelBomba"));
+                paresCartas.add(new CartaClan("bijuu"));
+                paresCartas.add(new CartaClan("sanacion"));
                 break;
             case 2:
                 String[] equipos = {"Ajax", "RealMadrid", "Manchester", "America",
@@ -321,6 +341,12 @@ public class Memorama {
                 cartas[i][j] = paresCartas.get(i * 5 + j);
             }
         }
+    }
+
+    public void aplicarEfectoPoder(int puntos) {
+        puntuaciones.set(turnoActual, puntuaciones.get(turnoActual) + puntos);
+        areaPuntuaciones.setText(getAvisoDePuntuacion());
+        siguienteTurno();
     }
 
     //Método para determinar si el juego ya terminó.
@@ -451,8 +477,8 @@ public class Memorama {
         frameAgradecimiento.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel panelAgradecimiento = new JPanel(new BorderLayout());
-        //ImageIcon imagenAgradecimiento = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\Agradecimiento.png");
-        ImageIcon imagenAgradecimiento = new ImageIcon("C:\\Users\\14321\\IdeaProjects\\Practica-7\\Agradecimiento.png");
+        ImageIcon imagenAgradecimiento = new ImageIcon("C:\\Users\\PC OSTRICH\\Practica-7\\Agradecimiento.png");
+        // ImageIcon imagenAgradecimiento = new ImageIcon("C:\\Users\\14321\\IdeaProjects\\Practica-7\\Agradecimiento.png");
         JLabel labelImagen = new JLabel(imagenAgradecimiento, JLabel.CENTER);
         panelAgradecimiento.add(labelImagen, BorderLayout.CENTER);
 
