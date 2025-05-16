@@ -8,6 +8,8 @@ public class CartaEquipo extends Carta {
     private String nombreEquipo;
     private String nombreLiga;
     private boolean esLiga;
+    private boolean esEspecial;
+    private String tipoEspecial;
 
     // Se establece el metodo constructor el cual requiere del nombre de un equipo, el nombre de una liga y un identificador el cual ayuda a conocer si la carta es liga o equipo.
     public CartaEquipo(String nombreEquipo, String nombreLiga, boolean esLiga) {
@@ -17,41 +19,65 @@ public class CartaEquipo extends Carta {
         this.esLiga = esLiga;
     }
 
-    // Se crea este metodo getter el cual sirve para obtener el nombre del equipo.
-    public String getNombreEquipo() {
-        return nombreEquipo;
+    public CartaEquipo(String tipoEspecial){
+        super();
+        this.tipoEspecial = tipoEspecial;
+        this.esEspecial = true;
     }
 
-    // Se crea este metodo getter el cual sirve para obtener el nombre de la liga.
-    public String getNombreLiga() {
-        return nombreLiga;
+    public String getTipoEspecial(){
+        return tipoEspecial;
     }
 
-    // Metodo booleano el cual ayuda a identificar si la carta es una liga o es un equipo,
-    public boolean esLiga() {
-        return esLiga;
+    public boolean esEspecial(){
+        return esEspecial;
     }
 
     // Metodo derivado de la herencia de la clase Carta, este metodo tiene la finalidad de comparar una carta con otra.
     @Override
     public boolean esIgualA(Carta carta) {
+        if (this.esEspecial || (carta instanceof CartaEquipo && ((CartaEquipo) carta).esEspecial)) {
+            return false;
+        }
+
         return carta instanceof CartaEquipo otraCarta &&
-                this.nombreEquipo.equals(otraCarta.nombreEquipo);
+                this.nombreLiga.equals(otraCarta.nombreLiga);
     }
 
-    // Metodo derivado de la herencia de la clase Carta, este metodo tiene la finalidad de asignarle la imagen correspondiente a la carta. 
+    // Metodo derivado de la herencia de la clase Carta, este metodo tiene la finalidad de asignarle la imagen correspondiente a la carta.
     @Override
     public ImageIcon getImagen() {
         String nombreImagen;
         if(esLiga){
             nombreImagen = nombreLiga + ".png";
+        }else if(esEspecial){
+            nombreImagen = tipoEspecial + ".png";
         }else{
             nombreImagen = nombreEquipo + ".png";
         }
-        // String ruta = "C:\\Users\\14321\\Downloads\\Practica-7\\cartasFutbolImagenes\\" + nombreImagen;
-        String ruta = "C:\\Users\\PC OSTRICH\\Practica-7\\cartasFutbolImagenes\\" + nombreImagen;
+        String ruta = "C:\\Users\\14321\\IdeaProjects\\Practica-7\\cartasFutbolImagenes\\" + nombreImagen;
+        //String ruta = "C:\\Users\\PC OSTRICH\\Practica-7\\cartasFutbolImagenes\\" + nombreImagen;
         ImageIcon icono = new ImageIcon(ruta);
         Image imagenEscalada = icono.getImage().getScaledInstance(115, 200, Image.SCALE_SMOOTH);
         return new ImageIcon(imagenEscalada);
+    }
+    //Método el cual maneja el uso de las cartas especiales dentro del modo de juego de los equipos
+    @Override
+    public void distincion(Memorama memorama) {
+        int columna = memorama.getUltimaColumnaSeleccionada();
+        int fila = memorama.getUltimaFilaSeleccionada();
+        if (tipoEspecial.equals("TarjetaRoja")) {
+            memorama.siguienteTurno();
+            memorama.getBotonCarta(fila,columna).setEnabled(false);
+            JOptionPane.showMessageDialog(null, "Tarjeta Roja, has perdido el turno");
+        }else if(tipoEspecial.equals("Var")){
+            memorama.getBotonCarta(fila,columna).setEnabled(false);
+            JOptionPane.showMessageDialog(null, "Var, se muestran todas las cartas");
+            memorama.mostrarTodasLasCartas();
+        }else if(tipoEspecial.equals("FueraDeJuego")){
+            memorama.getBotonCarta(fila,columna).setEnabled(false);
+            memorama.revolverCartasNoEmparejadas();
+            JOptionPane.showMessageDialog(null, "Fuera de juego, se revuelven todas las cartas");
+        }
     }
 }

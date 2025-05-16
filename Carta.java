@@ -38,4 +38,6 @@ public abstract class Carta {
     
     // Se define este metodo abstracto el cual logra que una carta obtenga su respectiva imagen correspondiente. 
     public abstract ImageIcon getImagen();
+
+    public abstract void distincion(Memorama memorama);
 }
